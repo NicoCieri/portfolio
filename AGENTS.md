@@ -12,9 +12,8 @@
 ## Rendering and architecture
 
 - Use Server Components by default. Add `"use client"` only at the smallest boundary that needs browser APIs, state, or event handlers.
-- Keep portfolio pages statically prerendered. `output: "export"` produces the deployable site in `out/`; serve that directory with a static host. `next start` does not serve this export.
+- Keep portfolio pages statically prerendered with the standard Next.js build. Build output lives in `.next/`; serve production builds with `npx next start` or a Next.js-compatible host.
 - Avoid request-time server features such as cookies, request headers, Server Actions, and runtime API routes. Generate all dynamic route paths at build time.
-- Use an export-compatible image strategy: preoptimized assets, a custom image loader, or explicitly unoptimized images. The default Next.js image optimization server is unavailable on static hosting.
 - Keep page content and metadata available in the generated HTML. Add accurate page titles and descriptions; configure canonical URLs when a real production domain is known.
 - Prefer direct, readable code. Introduce abstractions only when a concrete need justifies them.
 
@@ -33,4 +32,4 @@
 - Keep client JavaScript and dependencies small. Prefer system or locally hosted fonts and avoid unnecessary third-party requests.
 - Preserve existing files and Git history. Never commit secrets or generated build output.
 - Verify changed behavior with focused checks; avoid unnecessary test infrastructure for simple static content.
-- Confirm the build reports portfolio routes as static and that `out/index.html` contains the homepage content.
+- Confirm the build reports portfolio routes as static and that `.next/server/app/index.html` contains the homepage content.
