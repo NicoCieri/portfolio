@@ -1,11 +1,100 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
 @theme inline {
-  --font-sans: Arial, Helvetica, sans-serif;
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-foreground: var(--text);
+  --color-secondary: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-lime: var(--accent-lime);
+  --color-accent-mint: var(--accent-mint);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-violet: var(--accent-violet);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-control: var(--border-control);
+  --color-primary-hover: var(--primary-hover);
+  --font-sans: var(--font-geist-sans), Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  --text-meta: var(--type-meta);
+  --text-label: var(--type-label);
+  --text-small: var(--type-small);
+  --text-ui: var(--type-ui);
+  --text-nav: var(--type-nav);
+  --text-body: var(--type-body);
+  --text-lead: var(--type-lead);
+  --text-display: var(--type-display);
+
 }
 
-body {
-  background: #ffffff;
-  color: #171717;
-  font-family: var(--font-sans);
+@layer base {
+  html { scroll-behavior: auto; }
+  body { @apply bg-background font-sans text-foreground antialiased; }
+  ::selection { background: var(--accent-mint); color: var(--background); }
+  a, #about, #work { scroll-margin-top: 32px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 6px; }
+}
+
+@utility page-shell {
+  width: min(calc(100% - var(--page-gutter) * 2), var(--page-max-width));
+  margin-inline: auto;
+}
+
+.page-atmosphere::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: 900px;
+  max-height: 100%;
+  pointer-events: none;
+  background: var(--gradient-atmosphere);
+}
+
+.headline-gradient { color: var(--accent-mint); }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .headline-gradient {
+    width: fit-content;
+    max-width: 100%;
+    background: var(--gradient-highlight);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+.gradient-text-overlay { display: none; }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .gradient-text-overlay {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--gradient-highlight);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path var(--motion-reveal) var(--ease-reveal);
+  }
+  .gradient-trigger:is(:hover, :focus-visible) .gradient-text-overlay {
+    clip-path: inset(0);
+    animation: gradient-text-reveal var(--motion-reveal) var(--ease-reveal);
+  }
+}
+@keyframes gradient-text-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+  .gradient-text-overlay { animation: none !important; }
+}
+@media (forced-colors: active) {
+  .headline-gradient { background: none; color: CanvasText; }
+  .gradient-text-overlay { display: none; }
 }
