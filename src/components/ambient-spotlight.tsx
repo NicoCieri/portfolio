@@ -21,7 +21,7 @@ export function AmbientSpotlight() {
         before:[--dot-size:22px] before:[--dot-radius:0.75px] before:[--dot-edge:1.25px]
         before:[--dot-mask:radial-gradient(circle_at_center,#000_var(--dot-radius),transparent_var(--dot-edge))]
         before:[--light-mask:radial-gradient(ellipse_760px_640px_at_var(--ambient-position),#000_0%,rgba(0,0,0,0.65)_38%,transparent_78%)]
-        before:bg-(image:--gradient-highlight) before:opacity-45
+        before:bg-(image:--gradient-highlight) before:opacity-[calc(0.45*var(--ambient-dot-visibility,1))]
         before:[-webkit-mask-image:var(--dot-mask),var(--light-mask)]
         before:mask-[var(--dot-mask),var(--light-mask)]
         before:[-webkit-mask-size:var(--dot-size)_var(--dot-size),100%_100%]
@@ -29,7 +29,7 @@ export function AmbientSpotlight() {
         before:[-webkit-mask-repeat:repeat,no-repeat] before:[mask-repeat:repeat,no-repeat]
         before:[-webkit-mask-composite:source-in] before:mask-intersect
         max-[541px]:before:[--dot-size:20px] max-[541px]:before:[--dot-radius:0.8px]
-        max-[541px]:before:[--dot-edge:1.3px] max-[541px]:before:opacity-35
+        max-[541px]:before:[--dot-edge:1.3px] max-[541px]:before:opacity-[calc(0.35*var(--ambient-dot-visibility,1))]
       "
       aria-hidden="true"
     />

@@ -10,6 +10,14 @@ export function useAmbientSpotlight() {
     if (!element) return;
     const style = element.style;
 
+    // Dim only the dots once the hero leaves view; cursor lighting stays intact.
+    // IntersectionObserver avoids a scroll handler or another animation loop.
+    const hero = document.getElementById("about");
+    const heroVisibility = hero ? new IntersectionObserver(([entry]) => {
+      style.setProperty("--ambient-dot-visibility", entry.intersectionRatio > 0.25 ? "1" : "0.35");
+    }, { threshold: [0, 0.25] }) : null;
+    if (hero) heroVisibility?.observe(hero);
+
     const motion = window.matchMedia(
       "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     );
@@ -81,6 +89,7 @@ export function useAmbientSpotlight() {
     window.addEventListener("pointerout", leave);
 
     return () => {
+      heroVisibility?.disconnect();
       stop();
       motion.removeEventListener("change", configure);
       document.removeEventListener("visibilitychange", visibilityChange);

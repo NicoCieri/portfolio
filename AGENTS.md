@@ -4,7 +4,8 @@
 
 - Use Next.js App Router, React, strict TypeScript, Tailwind CSS, and npm.
 - Keep application code in `src/`; use `@/*` imports for paths under `src/`.
-- Reuse the visual tokens in `src/styles/tokens.css`, exposed through Tailwind's theme in `src/app/globals.css`. Prefer Tailwind utilities for layout, spacing, typography, responsive rules, and interaction states. Reserve custom CSS for complex gradients, masks, pseudo-elements, and animations.
+- Reuse the visual tokens in `src/styles/tokens.css`, exposed through Tailwind's theme in `src/app/globals.css`. Use Tailwind utilities for component styling, including gradients, masks, pseudo-elements, transforms, responsive rules, and interaction states. Use arbitrary values/properties and variants when standard utilities are insufficient.
+- Do not introduce CSS Modules or component CSS when Tailwind can express the styles. Use custom CSS only when a requirement cannot be implemented with Tailwind; document the specific limitation. Shared design-token declarations, base styles, and necessary keyframe definitions may remain in CSS. Keep repeated utility groups local to their feature as static class strings when that makes components clearer.
 - Run `npm install` to install dependencies, or `npm ci` for reproducible installs.
 - Run `npm run dev` for local development.
 - Run `npm run lint`, `npm run typecheck`, and `npm run build` before handing off changes.

@@ -3,7 +3,7 @@ import { ArenaPreview } from "@/components/arena-preview";
 
 export function FeaturedWork() {
   return (
-    <section className="page-shell mt-4 pt-8 pb-10 min-[541px]:mt-6 min-[541px]:pt-12 min-[541px]:pb-20" id="work" aria-labelledby="featured-heading">
+    <section className="page-shell mt-2 pt-6 pb-8 min-[541px]:mt-4 min-[541px]:pt-8 min-[541px]:pb-12" id="work" aria-labelledby="featured-heading">
       <div className="flex flex-wrap items-center justify-between gap-4 min-[541px]:flex-nowrap">
         <h2 className="text-body" id="featured-heading">
           <span className="mr-3 text-accent">01 /</span> Featured Work

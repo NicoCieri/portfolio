@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function SiteHeader() {
+export function SiteHeader({ experiencePage = false }: { experiencePage?: boolean }) {
   return (
     <header className="page-shell flex flex-wrap items-center justify-between gap-3 py-5 min-[541px]:flex-nowrap min-[541px]:gap-8 min-[541px]:py-8">
       <Link
@@ -11,9 +11,10 @@ export function SiteHeader() {
         <span className="text-[28px] font-[650] tracking-[-0.075em] min-[541px]:text-[30px]" aria-hidden="true">nc.</span>
         <span>Nicolás Cieri</span>
       </Link>
-      <nav className="flex gap-5 min-[541px]:gap-8" aria-label="Main navigation">
-        <a className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground" href="#work">Work</a>
-        <a className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground" href="#about">About</a>
+      <nav className="flex flex-wrap gap-x-5 min-[541px]:gap-x-8" aria-label="Main navigation">
+        <a className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground" href={experiencePage ? "/#work" : "#work"}>Work</a>
+        <Link className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground aria-[current=page]:text-foreground" href="/experience" aria-current={experiencePage ? "page" : undefined}>Experience</Link>
+        <a className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground" href={experiencePage ? "/#about" : "#about"}>About</a>
         <a className="inline-flex min-h-11 items-center text-nav text-secondary transition-colors duration-(--motion-fast) ease-[ease] hover:text-foreground focus-visible:text-foreground" href="mailto:ncierisalcedo@gmail.com">Contact</a>
       </nav>
     </header>
