@@ -262,3 +262,50 @@ test("seat confirmation keeps keyboard focus when the Continue control disappear
   assert.equal(h.root.dataset.review, "true");
   assert.equal(h.isReviewFocused(), true);
 });
+
+test("footer language navigation restores its position before revealing the new document", () => {
+  const scripts = sourceLoader()("@/lib/footer-navigation");
+  for (const hash of ["#site-footer", "#contact", ""]) {
+    const state = { scrollBehavior: "", visibility: "", loads: 0, scrolls: 0, frames: [] };
+    const style = {
+      get scrollBehavior() { return state.scrollBehavior; },
+      set scrollBehavior(value) { state.scrollBehavior = value; },
+      set visibility(value) { state.visibility = value; },
+      removeProperty(name) { if (name === "visibility") state.visibility = ""; else state.scrollBehavior = ""; },
+    };
+    let onLoad;
+    const context = vm.createContext({
+      location: { hash },
+      document: {
+        documentElement: { style },
+        getElementById: () => ({ scrollIntoView: options => {
+          assert.equal(options.behavior, "instant");
+          assert.equal(options.block, "end");
+          assert.equal(state.scrollBehavior, "auto");
+          state.scrolls++;
+        } }),
+      },
+      window: { addEventListener: (name, callback, options) => {
+        assert.equal(name, "load"); assert.equal(options.once, true);
+        onLoad = callback; state.loads++;
+      } },
+      requestAnimationFrame: callback => state.frames.push(callback),
+    });
+    vm.runInContext(scripts.footerNavigationStart, context);
+    if (hash === "#site-footer") {
+      assert.equal(state.visibility, "hidden");
+      assert.equal(state.scrollBehavior, "auto");
+    }
+    vm.runInContext(scripts.footerNavigationRestore, context);
+    assert.equal(state.visibility, "");
+    if (hash === "#site-footer") {
+      assert.equal(state.scrolls, 1);
+      onLoad(); state.frames[0]();
+      assert.equal(state.scrolls, 2);
+      assert.equal(state.scrollBehavior, "");
+    } else {
+      assert.equal(state.scrolls, 0);
+      assert.equal(state.loads, 0);
+    }
+  }
+});

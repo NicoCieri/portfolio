@@ -21,7 +21,7 @@ export function ContactSection() {
             </ul>
             <div className="mt-6 border-t border-border pt-5">
               <div className="flex flex-wrap gap-3">
-                <Button href="mailto:ncierisalcedo@gmail.com" variant="outline" size="md">
+                <Button href="mailto:ncierisalcedo@gmail.com" target="_blank" rel="noopener noreferrer" variant="outline" size="md">
                   <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0">
                     <rect x="3" y="5" width="18" height="14" rx="3" />
                     <path d="m3 7 9 6 9-6" />

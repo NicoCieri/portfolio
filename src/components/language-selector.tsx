@@ -50,12 +50,15 @@ export function LanguageSelector({
       {locales.map((option) => (
         <Button variant="custom" size="custom"
           key={option}
-          href={`${localePaths[option]}${scrollToBottomOnChange ? "#contact" : ""}`}
+          href={`${localePaths[option]}${scrollToBottomOnChange ? "#site-footer" : ""}`}
           hrefLang={option}
           lang={option}
           aria-current={locale === option ? "page" : undefined}
           aria-label={localeNames[option]}
           title={localeNames[option]}
+          onClick={(event) => {
+            if (option === locale && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) event.preventDefault();
+          }}
           className={optionClass}
         >
           {localeShortNames[option]}

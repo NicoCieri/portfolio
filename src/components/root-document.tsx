@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import { LocaleProvider } from "@/components/locale-provider";
 import type { Locale } from "@/i18n/config";
+import { footerNavigationStart, footerNavigationRestore } from "@/lib/footer-navigation";
 import "@/app/globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
@@ -11,8 +12,9 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geist.variable} ${geistMono.variable}`}>
-        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.dataset.theme=localStorage.getItem("portfolio-theme")==="dark"?"dark":"light"}catch{}` }} />
+        <script dangerouslySetInnerHTML={{ __html: footerNavigationStart + `try{document.documentElement.dataset.theme=localStorage.getItem("portfolio-theme")==="dark"?"dark":"light"}catch{}` }} />
         <LocaleProvider locale={locale}>{children}</LocaleProvider>
+        <script dangerouslySetInnerHTML={{ __html: footerNavigationRestore }} />
       </body>
     </html>
   );
