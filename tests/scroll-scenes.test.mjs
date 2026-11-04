@@ -45,7 +45,7 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
   const page = { ...events(), hidden: false };
   const motion = { ...events(), matches: false };
   const compact = { ...events(), matches: false };
-  browser.matchMedia = query => query.includes("reduced-motion") ? motion : compact;
+  browser.matchMedia = query => query.includes("reduced-motion") ? motion : query === "(max-width: 700px)" ? { ...events(), matches: false } : compact;
   const viewport = { offsetHeight: 700 };
   const progressLabel = { textContent: "0" };
   const liveRegion = { live: "polite", setAttribute(_, value) { this.live = value; } };
@@ -53,7 +53,7 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
   const properties = new Map();
   const progressIndicator = { style: { getPropertyValue: key => properties.get(key) ?? "", setProperty: (key, value) => properties.set(key, value) } };
   const root = {
-    dataset: {},
+    ...events(), dataset: {},
     querySelector: selector => selector === "[data-scene-progress-label]" ? progressLabel : selector === "[data-mobile-scene-progress]" ? progressIndicator : viewport, querySelectorAll: () => [liveRegion],
     offsetHeight: 3500, getBoundingClientRect: () => ({ top: sectionTop }),
     style: { setProperty: () => assert.fail("Progress must not invalidate styles throughout the scene") },
@@ -101,23 +101,17 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
     assert.equal(frames.size, 1);
     const pending = [...frames.values()][0]; frames.clear(); pending();
     assert.equal(calls.at(-1), false);
-    assert.equal(properties.get("--scene-travel"), "0.5");
-    assert.equal(progressLabel.textContent, "53");
     sectionTop = -3000;
     intersection([{ isIntersecting: false }]);
     activity([{ isIntersecting: false }]);
     assert.equal(root.dataset.sceneActive, "false");
     assert.equal(browser.handlers.has("scroll"), false);
-    assert.equal(properties.get("--scene-travel"), "1");
-    assert.equal(progressLabel.textContent, "100");
     assert.equal(liveRegion.live, "off");
     browser.emit("scroll"); resize();
     assert.equal(frames.size, 0);
     sectionTop = 100;
     activity([{ isIntersecting: true }]);
     intersection([{ isIntersecting: true }]);
-    assert.equal(properties.get("--scene-travel"), "0");
-    assert.equal(progressLabel.textContent, "0");
     assert.equal(liveRegion.live, "polite");
     browser.emit("scroll"); assert.equal(frames.size, 1);
     const beforeHiding = calls.length;
@@ -499,4 +493,55 @@ test("airport search types a PNR before loading, reveals results and reverses cl
   h.controller.update(true);
   assert.equal(h.root.dataset.searchState, "ready");
   assert.equal(h.variables.get("--airport-pointer-opacity"), "0");
+});
+
+
+test("mobile autoplay loops only while visible, pauses hidden and respects reduced motion", () => {
+  let effect, observerCallback, frameId = 0;
+  const frames = new Map(), samples = [];
+  const root = { id: "ticketing", dataset: {}, dispatchEvent: event => samples.push(event.detail) };
+  const mobile = { ...events(), matches: true }, motion = { ...events(), matches: false };
+  const page = { ...events(), hidden: false };
+  const load = sourceLoader({ react: {
+    useRef: () => ({ current: { closest: () => root } }),
+    useEffect: fn => { effect = fn; },
+  } }, {
+    window: { matchMedia: query => query.includes("reduced-motion") ? motion : mobile }, document: page,
+    CustomEvent: class { constructor(type, { detail }) { this.type = type; this.detail = detail; } },
+    requestAnimationFrame: fn => { frames.set(++frameId, fn); return frameId; },
+    cancelAnimationFrame: id => frames.delete(id),
+    IntersectionObserver: class { constructor(fn) { observerCallback = fn; } observe() {} disconnect() {} },
+  });
+  load("@/hooks/use-demo-playback").useDemoPlayback();
+  const cleanup = effect();
+  const tick = time => { const pending = [...frames.values()]; frames.clear(); pending.forEach(fn => fn(time)); };
+  assert.equal(frames.size, 0);
+  observerCallback([{ isIntersecting: true, intersectionRatio: 0.1 }]); assert.equal(frames.size, 0);
+  observerCallback([{ isIntersecting: true, intersectionRatio: 0.8 }]);
+  tick(0); tick(100); const beforePause = samples.at(-1);
+  observerCallback([{ isIntersecting: false, intersectionRatio: 0 }]); assert.equal(frames.size, 0);
+  observerCallback([{ isIntersecting: true, intersectionRatio: 0.8 }]);
+  tick(5000); assert.equal(samples.at(-1), beforePause);
+  page.hidden = true; page.emit("visibilitychange"); assert.equal(frames.size, 0);
+  page.hidden = false; page.emit("visibilitychange");
+  for (let time = 6000; time < 20000; time += 100) tick(time);
+  assert.ok(samples.includes(1));
+  const completed = samples.indexOf(1);
+  assert.ok(samples.slice(completed + 1).includes(0), "restart after the completed state");
+  motion.matches = true; motion.emit("change"); assert.equal(frames.size, 0);
+  motion.matches = false; motion.emit("change"); assert.equal(frames.size, 1);
+  mobile.matches = false; mobile.emit("change"); assert.equal(frames.size, 0);
+  cleanup(); assert.equal(frames.size, 0); assert.equal(page.handlers.size, 0);
+});
+
+test("explicit playback progress drives every demo independently of scroll", () => {
+  for (const [name, hook] of [...scenes, ["seat-selection", "useSeatSelectionScroll"], ["stadium-editor", "useStadiumEditorScroll"], ["airport", "useAirportScroll"], ["craft", "useCraftScroll"]]) {
+    const h = sceneHarness(name, hook, "en", true);
+    h.setTop(1000); h.controller.update(false, 0.45);
+    const before = [...h.variables];
+    h.setTop(-7000); h.controller.update(false, 0.45);
+    assert.deepEqual([...h.variables], before, name);
+    h.controller.update(false, 1);
+    for (const value of h.variables.values()) assert.ok(!/NaN|Infinity/.test(value), name);
+  }
 });

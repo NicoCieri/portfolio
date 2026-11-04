@@ -55,7 +55,7 @@ export function useCraftScroll() {
       }
     }
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       root.dataset.motion = String(!reducedMotion);
       if (reducedMotion) {
@@ -63,7 +63,7 @@ export function useCraftScroll() {
         root.removeAttribute("data-stage");
         return;
       }
-      updateGraph(clamp(-root.getBoundingClientRect().top / scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight)));
+      updateGraph(playbackProgress ?? clamp(-root.getBoundingClientRect().top / scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight)));
     }
 
     return { update };

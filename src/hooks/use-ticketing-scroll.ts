@@ -21,12 +21,12 @@ export function useTicketingScroll() {
     let phase: "ready" | "scanning" | "validated" | null = null;
     let revealed: boolean | null = null;
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       // Start on entry and finish before the final sticky hold.
       const entryLead = screenHeight;
       const range = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead);
-      const progress = reducedMotion ? 1 : Math.max(0, Math.min(1, (entryLead - root.getBoundingClientRect().top) / range));
+      const progress = reducedMotion ? 1 : playbackProgress ?? Math.max(0, Math.min(1, (entryLead - root.getBoundingClientRect().top) / range));
       const eased = smoothProgress(progress / 0.5);
       // Overlap fully before validation, then reveal both success screens.
       const scanIn = smoothProgress((progress - 0.5) / 0.14);

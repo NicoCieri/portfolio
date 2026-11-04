@@ -49,11 +49,11 @@ export function useSeatSelectionScroll() {
     let lastCount = -1;
     let continued = false;
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       const lead = screenHeight * 0.35;
       const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, lead);
-      const p = reducedMotion ? 1 : clamp((lead - root.getBoundingClientRect().top) / distance);
+      const p = reducedMotion ? 1 : playbackProgress ?? clamp((lead - root.getBoundingClientRect().top) / distance);
       const next = Math.max(1, stops.findIndex(([time]) => time >= p));
       const start = stops[next - 1];
       const end = stops[next];

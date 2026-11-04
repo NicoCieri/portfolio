@@ -1,5 +1,6 @@
 export const en = {
   common: {
+
     skipToContent: "Skip to content",
     contact: "Contact",
     contactAria: "Contact Nicolás",
@@ -25,7 +26,7 @@ export const en = {
     linkedinAria: "Nicolás Cieri on LinkedIn",
   },
   hero: {
-    badge: "Senior Frontend Engineer",
+    badge: "Senior Software Engineer",
     headingLine1: "I make ",
     headingLine2: "complex things ",
     headingLine3: "feel simple.",

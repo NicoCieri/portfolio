@@ -1,6 +1,6 @@
 "use client";
 
-import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
@@ -25,11 +25,11 @@ export function TicketingExperience() {
           </div>
         </header>
 
-        <div className="pointer-events-none absolute inset-0 isolate max-[700px]:relative max-[700px]:inset-auto max-[700px]:w-full motion-reduce:relative motion-reduce:inset-auto motion-reduce:my-6 motion-reduce:h-[360px]" aria-hidden="true">
-          <MobileDemoStage height={400}>
+        <div className="pointer-events-none absolute inset-0 isolate max-[700px]:relative max-[700px]:inset-auto max-[700px]:w-full motion-reduce:relative motion-reduce:inset-auto motion-reduce:my-6 motion-reduce:h-[360px]">
+          <DemoPlayer><MobileDemoStage height={400}>
             <Phone side="attendee" />
             <Phone side="controller" />
-          </MobileDemoStage>
+          </MobileDemoStage></DemoPlayer>
         </div>
 
         <footer className="page-shell relative z-20 pb-6 min-[701px]:pb-8 max-[700px]:pb-0 max-[700px]:[&>div]:mb-2 max-[700px]:[&>div]:gap-2 max-[700px]:[&_p]:text-[11px]">
@@ -44,7 +44,6 @@ export function TicketingExperience() {
           </div>
           <div className="hidden h-1 overflow-hidden min-[701px]:block rounded-full bg-foreground/15" aria-hidden="true"><div className="h-full origin-left scale-x-[var(--scene-scroll,0)] rounded-full bg-foreground motion-reduce:scale-x-100" /></div>
         </footer>
-        <MobileSceneProgress />
       </div>
       <p data-validation-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="px-5 py-4 text-small">{t.noscript}</p></noscript>

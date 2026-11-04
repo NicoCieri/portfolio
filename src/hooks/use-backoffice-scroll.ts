@@ -22,14 +22,14 @@ export function useBackofficeScroll() {
     const mobileSave = root.querySelector<HTMLElement>("[data-bo-mobile-save]");
     let lastPhase = "";
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       const bounds = root.getBoundingClientRect();
       const introDistance = screenHeight * SCENE_INTRO_SCREENS;
       const distance = Math.max(1, scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight) - introDistance);
-      const reveal = reducedMotion ? 1 : sceneContentReveal(-bounds.top, screenHeight);
+      const reveal = reducedMotion || playbackProgress !== undefined ? 1 : sceneContentReveal(-bounds.top, screenHeight);
       root.style.setProperty("--scene-content-reveal", String(reveal));
-      const scrollProgress = reducedMotion ? 1 : clamp((-bounds.top - introDistance) / distance);
+      const scrollProgress = reducedMotion ? 1 : playbackProgress ?? clamp((-bounds.top - introDistance) / distance);
       const p = mapSceneProgress(scrollProgress, scrollIntervals);
       const phase = p < 0.2 ? "queue" : p < 0.43 ? "inspect" : p < 0.58 ? "saving" : p < 0.73 ? "error" : p < 0.87 ? "retry" : "saved";
       const changed = phase === "saving" || phase === "retry" || phase === "saved";

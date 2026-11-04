@@ -1,6 +1,6 @@
 "use client";
 
-import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+import { DemoPlayer } from "@/components/demo-player";
 
 import { viewportReflowClass } from "@/components/scene-classes";
 
@@ -25,12 +25,12 @@ export function CodeCraft() {
           <SectionAtmosphere tone="violet" />
           <AiBackground />
         </div>
-        <div className="page-shell relative isolate flex h-full flex-col gap-4 overflow-hidden [@media(max-height:600px),(max-width:359px)]:overflow-visible [@media(max-height:600px),(max-width:359px)]:h-auto rounded-3xl border border-border bg-surface px-3 pt-5 pb-6 max-[700px]:pb-32 min-[701px]:px-6 min-[701px]:pb-8 motion-reduce:h-auto motion-reduce:overflow-visible">
+        <div className="page-shell relative isolate flex h-full flex-col gap-4 overflow-hidden [@media(max-height:600px),(max-width:359px)]:overflow-visible [@media(max-height:600px),(max-width:359px)]:h-auto rounded-3xl border border-border bg-surface px-3 pt-5 pb-6 max-[700px]:pb-5 min-[701px]:px-6 min-[701px]:pb-8 motion-reduce:h-auto motion-reduce:overflow-visible">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <h2 id="craft-heading" className="text-[clamp(26px,3vw,40px)] leading-[1.05] font-bold tracking-[-0.045em]">{t.heading1}<br />{" "}<span className="text-accent">{t.heading2}</span></h2>
           <p className="max-w-[48ch] text-small leading-relaxed text-secondary">{t.intro1}<span className="font-semibold text-foreground">{t.introEmphasis}</span>{t.intro2}</p>
         </header>
-        <AgentOrchestration />
+        <DemoPlayer><AgentOrchestration /></DemoPlayer>
         <ol className="grid grid-cols-3 gap-3" aria-label={t.deliveryAria}>
           {t.stages.map((label, index) => <li key={label} className={`border-t-2 border-border pt-2 text-[11px] font-medium text-secondary min-[701px]:text-small ${active[index]}`}><span className="mr-2 font-mono text-accent">0{index + 1}</span>{label}</li>)}
         </ol>
@@ -39,7 +39,6 @@ export function CodeCraft() {
           <div className="h-0.5 flex-1 bg-border"><div className="h-full origin-left scale-x-(--craft-progress) bg-accent motion-reduce:scale-x-100" /></div>
         </div>
         </div>
-        <MobileSceneProgress />
       </div>
     </CraftScrollScene>
   );

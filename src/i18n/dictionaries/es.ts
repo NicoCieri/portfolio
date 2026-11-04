@@ -2,6 +2,7 @@ import type { Dictionary } from "@/i18n/dictionaries/en";
 
 export const es: Dictionary = {
   common: {
+
     skipToContent: "Saltar al contenido",
     contact: "Contacto",
     contactAria: "Contactar a Nicolás",
@@ -27,7 +28,7 @@ export const es: Dictionary = {
     linkedinAria: "Nicolás Cieri en LinkedIn",
   },
   hero: {
-    badge: "Senior Frontend Engineer",
+    badge: "Senior Software Engineer",
     headingLine1: "Hago que ",
     headingLine2: "lo complejo ",
     headingLine3: "se sienta simple.",

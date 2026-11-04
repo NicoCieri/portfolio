@@ -1,6 +1,6 @@
 "use client";
 
-import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
@@ -34,14 +34,13 @@ export function CommerceExperience() {
             </div>
           </header>
           <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1080px,calc((100svh-398px)*1.75))]`}>
-            <MobileDemoStage fillSpace><ShoppingIllustration /></MobileDemoStage>
+            <DemoPlayer><MobileDemoStage fillSpace><ShoppingIllustration /></MobileDemoStage></DemoPlayer>
             <figcaption className="mt-4 text-center text-[11px] text-secondary min-[701px]:text-meta">{t.caption}</figcaption>
           </figure>
           <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
             {steps.map(({ number, title, copy, active }) => <li key={number} className={`border-t-2 border-foreground/10 pt-3 ${active}`}><p className="text-[12px] leading-snug font-semibold min-[701px]:text-small"><span className="mb-1 block font-mono text-[11px] text-accent min-[701px]:mr-3 min-[701px]:inline">{number}</span>{title}</p><p className="mt-1 hidden text-small text-secondary min-[901px]:block">{copy}</p></li>)}
           </ol>
           <div aria-hidden="true" className="page-shell hidden h-1 overflow-hidden min-[701px]:block rounded-full bg-foreground/10"><div className="h-full origin-left scale-x-(--commerce-progress) rounded-full bg-accent motion-reduce:scale-x-100" /></div>
-        <MobileSceneProgress />
         </div>
         <p data-commerce-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
         <noscript><p className="page-shell py-4 text-small">{t.noscript}</p></noscript>

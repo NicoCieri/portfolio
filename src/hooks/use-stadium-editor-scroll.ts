@@ -38,11 +38,11 @@ export function useStadiumEditorScroll() {
 
     let lastAction = "";
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       const lead = screenHeight * 0.35;
       const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, lead);
-      const progress = reducedMotion ? 1 : clamp((lead - root.getBoundingClientRect().top) / distance);
+      const progress = reducedMotion ? 1 : playbackProgress ?? clamp((lead - root.getBoundingClientRect().top) / distance);
       const edit = ease((progress - 0.47) / 0.07);
       const move = ease((progress - 0.58) / 0.08);
       const pan = ease((progress - 0.7) / 0.07);

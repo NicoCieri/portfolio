@@ -65,7 +65,7 @@ References: [hosted reCAPTCHA](https://help.formspree.io/articles/form-and-proje
 
 ## Scene architecture
 
-Each demo hook defines its phases, coordinates, CSS variables, and localized announcements. `useScrollScene` owns their shared browser lifecycle: passive scroll events, one pending animation frame, visibility/resize observers, reduced-motion changes, and cleanup. Scenes activate within 200px of the viewport so their state is ready before entry. Distant scenes detach scroll/resize listeners and pause descendant CSS animations; hiding the browser tab pauses every scene. The DOM and section heights stay mounted to preserve navigation, reverse scrolling and keyboard focus. Live announcements remain limited to visible scenes. Progress variables are scoped to the small progress indicator, not the full scene subtree.
+Each demo hook defines its phases, coordinates, CSS variables, and localized announcements. `useScrollScene` owns their shared browser lifecycle: passive scroll events, one pending animation frame, visibility/resize observers, reduced-motion changes, and cleanup. Scenes activate within 200px of the viewport so their state is ready before entry. Distant scenes detach scroll/resize listeners and pause descendant CSS animations; hiding the browser tab pauses every scene. The DOM and section heights stay mounted to preserve navigation, reverse scrolling and keyboard focus. Live announcements remain limited to visible scenes. On mobile, `DemoPlayer` and `useDemoPlayback` provide automatic, time-driven playback while at least 20% of the section is visible. The shared controller receives normalized progress instead of reading scroll position; mobile sections use normal flow without sticky scroll travel. Each demo loops after a short hold on its completed state and pauses when its section leaves view or the tab is hidden. Reduced-motion users receive the static final state.
 
 The seat demo scopes animation variables to its maps, skips unchanged style/state writes, and removes fully transparent map layers from rendering while retaining both sides of a crossfade. The decorative venue seats reuse one SVG definition instead of repeating their markup. Setup callbacks are memoized; translated scenes reinitialize at the current scroll position when the language changes.
 
@@ -81,7 +81,7 @@ After deployment, verify the domain in Google Search Console, submit `/sitemap.x
 
 ## Mobile rendering
 
-At widths up to 700px, the portfolio uses a solid page background and opaque controls. Decorative scene backgrounds, atmosphere gradients, ambient lighting and falling hero details are hidden. Device shadows, skeleton pulses and celebration animations are desktop-only. Theme changes are immediate; the clock has a static separator and refreshes once per minute. The progress ring fills without rotating, shrinking or fading. Scroll-driven demo actions and loading indicators remain available.
+At widths up to 700px, the portfolio uses a solid page background and opaque controls. Decorative scene backgrounds, atmosphere gradients, ambient lighting and falling hero details are hidden. Device shadows, skeleton pulses and celebration animations are desktop-only. Theme changes are immediate; the clock has a static separator and refreshes once per minute. Mobile demos play automatically when visible and loop without controls. Scrolling freely navigates between sections and never advances a mobile demo. Desktop retains scroll-driven playback. Loading indicators remain available.
 
 ## Accessibility
 

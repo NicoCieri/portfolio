@@ -24,9 +24,9 @@ export function useAirportScroll() {
     const targets = new Map(Array.from(root.querySelectorAll<HTMLElement>("[data-airport-target]")).map(element => [element.dataset.airportTarget, element]));
     let previous = "";
     return {
-      update(reducedMotion) {
+      update(reducedMotion, playbackProgress) {
         const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, sceneScreenHeight(viewport));
-        const progress = reducedMotion ? 1 : clamp(-root.getBoundingClientRect().top / distance);
+        const progress = reducedMotion ? 1 : playbackProgress ?? clamp(-root.getBoundingClientRect().top / distance);
         const phase = progress < 0.34 ? 0 : progress < 0.57 ? 1 : progress < 0.84 ? 2 : 3;
         const searchState = progress < 0.035 ? "idle" : progress < 0.105 ? "typing" : progress < 0.23 ? "loading" : "ready";
         root.dataset.searchState = searchState;

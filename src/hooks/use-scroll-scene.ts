@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 type SceneElements = { root: HTMLElement; viewport: HTMLElement };
 type SceneController = {
-  update: (reducedMotion: boolean) => void;
+  update: (reducedMotion: boolean, playbackProgress?: number) => void;
   cleanup?: () => void;
 };
 type SceneSetup = (elements: SceneElements) => SceneController;
@@ -19,12 +19,12 @@ export function useScrollScene(viewportSelector: string, setup: SceneSetup) {
     if (!root || !viewport) return;
 
     const controller = setup({ root, viewport });
-    const progressIndicator = root.querySelector<HTMLElement>("[data-mobile-scene-progress]");
-    const progressLabel = root.querySelector<HTMLElement>("[data-scene-progress-label]");
     const announcements = Array.from(root.querySelectorAll<HTMLElement>('[role="status"][aria-live]'));
     for (const element of announcements) element.setAttribute("aria-live", "off");
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const compact = window.matchMedia("(max-height: 600px), (max-width: 359px)");
+    const mobile = window.matchMedia("(max-width: 700px)");
+    let playbackProgress = 0;
     let nearby = false;
     let visible = false;
     let frame: number | null = null;
@@ -37,15 +37,11 @@ export function useScrollScene(viewportSelector: string, setup: SceneSetup) {
     function update() {
       frame = null;
       if (!root || !viewport) return;
-      // Read geometry before the controller writes animation styles.
-      // Follow the entire sticky section, including the final pause before the next demo.
-      const travel = Math.max(1, root.offsetHeight - viewport.offsetHeight);
-      const progress = Math.max(0, Math.min(1, -root.getBoundingClientRect().top / travel));
+      if (mobile.matches) {
+        controller.update(motion.matches, playbackProgress);
+        return;
+      }
       controller.update(motion.matches || compact.matches);
-      const value = String(progress);
-      if (progressIndicator && progressIndicator.style.getPropertyValue("--scene-travel") !== value) progressIndicator.style.setProperty("--scene-travel", value);
-      const percentage = String(Math.round(Math.min(1, progress / 0.94) * 100));
-      if (progressLabel && progressLabel.textContent !== percentage) progressLabel.textContent = percentage;
     }
 
     function schedule() {
@@ -59,7 +55,7 @@ export function useScrollScene(viewportSelector: string, setup: SceneSetup) {
       const active = nearby && !document.hidden;
       if (active) {
         window.addEventListener("resize", schedule, { passive: true });
-        if (!motion.matches && !compact.matches) window.addEventListener("scroll", schedule, { passive: true });
+        if (!mobile.matches && !motion.matches && !compact.matches) window.addEventListener("scroll", schedule, { passive: true });
       }
       // Preserve correct initial/restored URLs and compact/reduced-motion states.
       if (!document.hidden) update();
@@ -67,6 +63,13 @@ export function useScrollScene(viewportSelector: string, setup: SceneSetup) {
       for (const element of announcements) element.setAttribute("aria-live", active && visible ? "polite" : "off");
     }
 
+    function playback(event: Event) {
+      if (!mobile.matches) return;
+      playbackProgress = (event as CustomEvent<number>).detail;
+      update();
+    }
+    root.addEventListener("demo-progress", playback);
+    mobile.addEventListener("change", configure);
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       for (const element of announcements) element.setAttribute("aria-live", visible && !document.hidden ? "polite" : "off");
@@ -90,6 +93,8 @@ export function useScrollScene(viewportSelector: string, setup: SceneSetup) {
 
     return () => {
       cancel();
+      root.removeEventListener("demo-progress", playback);
+      mobile.removeEventListener("change", configure);
       intersection.disconnect();
       activity.disconnect();
       resize.disconnect();

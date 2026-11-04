@@ -31,14 +31,14 @@ export function useCommerceScroll() {
     const announcement = root.querySelector<HTMLElement>("[data-commerce-announcement]");
     let previousPhase = "";
 
-    function update(reducedMotion: boolean) {
+    function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       const bounds = root.getBoundingClientRect();
       const introDistance = screenHeight * SCENE_INTRO_SCREENS;
       const distance = Math.max(1, scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight) - introDistance);
-      const reveal = reducedMotion ? 1 : sceneContentReveal(-bounds.top, screenHeight);
+      const reveal = reducedMotion || playbackProgress !== undefined ? 1 : sceneContentReveal(-bounds.top, screenHeight);
       root.style.setProperty("--scene-content-reveal", String(reveal));
-      const scrollProgress = reducedMotion ? 1 : clamp((-bounds.top - introDistance) / distance);
+      const scrollProgress = reducedMotion ? 1 : playbackProgress ?? clamp((-bounds.top - introDistance) / distance);
       const p = mapSceneProgress(scrollProgress, scrollIntervals);
       const variant = ease((p - 0.32) / 0.06);
       const flight = ease((p - 0.48) / 0.09);

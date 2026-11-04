@@ -3,7 +3,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { useMobileDemoLayout } from "@/hooks/use-mobile-demo-layout";
 
-export const mobileDemoViewportClass = "max-[700px]:h-[calc(100dvh-env(safe-area-inset-bottom))] max-[700px]:min-h-0 max-[700px]:justify-start max-[700px]:gap-3 max-[700px]:pt-3! max-[700px]:pb-32! max-[700px]:[&>*]:shrink-0";
+export const mobileDemoViewportClass = "max-[700px]:h-[calc(100dvh-env(safe-area-inset-bottom))] max-[700px]:min-h-0 max-[700px]:justify-start max-[700px]:gap-3 max-[700px]:pt-3! max-[700px]:pb-5! max-[700px]:[&>*]:shrink-0";
 export const mobileDemoHeaderClass = "max-[700px]:shrink-0 max-[700px]:pt-0! max-[700px]:mb-0! max-[700px]:[&_h2]:text-[26px]! max-[700px]:[&_h2]:leading-[1.08]! max-[700px]:[&>p]:text-[12px] max-[700px]:[&>div]:mt-2 max-[700px]:[&>div]:gap-2 max-[700px]:[&>div>p]:text-[14px]! max-[700px]:[&>div>p]:leading-[1.5]!";
 export const mobileDemoFigureClass = "max-[700px]:max-w-none! max-[700px]:shrink-0 max-[700px]:[&>figcaption]:hidden";
 
