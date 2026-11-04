@@ -8,3 +8,8 @@ coverage/
 .env*
 !.env.example
 .vercel/
+
+# Local editorial drafts and previous iterations are not published.
+/docs/CONTENT.md
+/docs/VISUAL_ASSETS.md
+/archive/

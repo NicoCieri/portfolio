@@ -1,0 +1,19 @@
+import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
+import { LocaleProvider } from "@/components/locale-provider";
+import type { Locale } from "@/i18n/config";
+import "@/app/globals.css";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
+
+export function RootDocument({ locale, children }: { locale: Locale; children: ReactNode }) {
+  return (
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${geist.variable} ${geistMono.variable}`}>
+        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.dataset.theme=localStorage.getItem("portfolio-theme")==="dark"?"dark":"light"}catch{}` }} />
+        <LocaleProvider locale={locale}>{children}</LocaleProvider>
+      </body>
+    </html>
+  );
+}

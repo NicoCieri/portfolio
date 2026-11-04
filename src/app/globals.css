@@ -31,11 +31,12 @@
 }
 
 @layer base {
-  html { scroll-behavior: auto; }
+  html { @apply scroll-smooth scroll-pb-24 motion-reduce:scroll-auto; }
   body { @apply bg-background font-sans text-foreground antialiased; }
   ::selection { background: var(--accent-mint); color: var(--background); }
   a, #about, #work { scroll-margin-top: 32px; }
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 6px; }
+  :focus-visible { scroll-margin-bottom: 96px; }
 }
 
 @utility page-shell {
@@ -43,58 +44,56 @@
   margin-inline: auto;
 }
 
-.page-atmosphere::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0 0 auto;
-  height: 900px;
-  max-height: 100%;
-  pointer-events: none;
-  background: var(--gradient-atmosphere);
+@keyframes section-atmosphere-drift {
+  from { transform: translate(var(--atmosphere-start-x, -8vw), var(--atmosphere-start-y, 28svh)); }
+  to { transform: translate(var(--atmosphere-end-x, 8vw), var(--atmosphere-end-y, -32svh)); }
 }
 
-.headline-gradient { color: var(--accent-mint); }
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .headline-gradient {
-    width: fit-content;
-    max-width: 100%;
-    background: var(--gradient-highlight);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
+@keyframes hero-detail-fall {
+  0% { opacity: 0; transform: translateY(var(--detail-start)) rotate(var(--detail-tilt)); }
+  12%, 82% { opacity: var(--detail-opacity); }
+  100% { opacity: 0; transform: translateY(var(--detail-end)) rotate(var(--detail-turn)); }
 }
 
-.gradient-text-overlay { display: none; }
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .gradient-text-overlay {
-    display: block;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: var(--gradient-highlight);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    clip-path: inset(0 0 0 100%);
-    transition: clip-path var(--motion-reveal) var(--ease-reveal);
-  }
-  .gradient-trigger:is(:hover, :focus-visible) .gradient-text-overlay {
-    clip-path: inset(0);
-    animation: gradient-text-reveal var(--motion-reveal) var(--ease-reveal);
-  }
+@keyframes hero-detail-fall-next {
+  0% { opacity: 0; transform: translateY(var(--detail-start)) rotate(var(--detail-tilt)); }
+  12%, 82% { opacity: var(--detail-opacity); }
+  100% { opacity: 0; transform: translateY(var(--detail-end)) rotate(var(--detail-turn)); }
 }
-@keyframes gradient-text-reveal {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0); }
+
+@keyframes hero-details-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes theme-star-twinkle {
+  0%, 45%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+  58% { opacity: 1; }
+}
+
+@keyframes cta-arrow-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
-  .gradient-text-overlay { animation: none !important; }
+  .theme-star, .cta-arrow-bob { animation: none !important; }
 }
-@media (forced-colors: active) {
-  .headline-gradient { background: none; color: CanvasText; }
-  .gradient-text-overlay { display: none; }
+
+@keyframes booking-success-enter {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes booking-success-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  65% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes booking-success-check {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
 }

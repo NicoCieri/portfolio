@@ -1,15 +1,21 @@
 import type { ReactNode } from "react";
 import { AmbientSpotlight } from "@/components/ambient-spotlight";
+import { ContactSection } from "@/components/contact/contact-section";
+import { ContactShortcut } from "@/components/contact/contact-shortcut";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SkipToContent } from "@/components/skip-to-content";
 
-export function PortfolioShell({ children, experiencePage = false }: { children: ReactNode; experiencePage?: boolean }) {
+export function PortfolioShell({ children }: { children: ReactNode }) {
   return (
-    <div className="page-atmosphere relative isolate min-h-svh bg-(image:--gradient-page) font-sans text-foreground">
+    <div className="relative isolate min-h-svh overflow-x-clip [--header-height:141px] min-[701px]:[--header-height:149px] min-[801px]:[--header-height:93px] bg-(image:--gradient-page) font-sans text-foreground">
       <AmbientSpotlight />
-      <a className="fixed top-3 left-4 z-10 -translate-y-[160%] bg-foreground px-[18px] py-3 text-background focus:translate-y-0" href="#main-content">Skip to content</a>
+      <SkipToContent />
+      <ContactShortcut />
       <div className="relative z-1">
-        <SiteHeader experiencePage={experiencePage} />
-        <main id="main-content" tabIndex={-1}>{children}</main>
+        <SiteHeader />
+        <main id="main-content" tabIndex={-1} className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--focus-ring)">{children}<ContactSection /></main>
+        <SiteFooter />
       </div>
     </div>
   );

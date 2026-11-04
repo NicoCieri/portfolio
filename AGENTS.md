@@ -31,9 +31,20 @@
 
 ## Quality
 
+- Frame homepage sections around Nicolás’s professional contributions and engineering capabilities, not product sales. Clearly distinguish original fictional demonstrations from actual employer work; do not imply the demonstrations reproduce shipped products or establish unverified achievements.
 - Prioritize semantic HTML, keyboard access, visible focus indicators, sufficient contrast, and descriptive alternative text.
 - Respect reduced-motion preferences when motion is introduced.
 - Keep client JavaScript and dependencies small. Prefer system or locally hosted fonts and avoid unnecessary third-party requests.
 - Preserve existing files and Git history. Never commit secrets or generated build output.
 - Verify changed behavior with focused checks; avoid unnecessary test infrastructure for simple static content.
 - Confirm the build reports portfolio routes as static and that `.next/server/app/index.html` contains the homepage content.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
