@@ -38,12 +38,12 @@ export function ContactShortcut() {
         inert={hideContact}
         tabIndex={hideContact ? -1 : undefined}
         aria-label={t.common.contactAria}
-        className="pointer-events-auto absolute right-0 bottom-0 origin-bottom-right"
+        className="pointer-events-auto absolute right-0 bottom-0 origin-bottom-right max-[700px]:size-12 max-[700px]:gap-0 max-[700px]:p-0"
       >
         <span aria-hidden="true" className="grid size-8 place-items-center rounded-full bg-(--pop-ink)/[0.07] transition-[rotate,translate,background-color] duration-300 ease-out group-hover/action:bg-(--pop-ink)/[0.12] motion-safe:group-hover/action:-translate-y-0.5 motion-safe:group-hover/action:-rotate-12 motion-safe:group-focus-visible/action:-rotate-12">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="size-5"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7 8 6 8-6" /></svg>
         </span>
-        {t.common.contact}
+        <span className="hidden min-[701px]:inline">{t.common.contact}</span>
       </Button>
       <Button size="icon"
         type="button"
