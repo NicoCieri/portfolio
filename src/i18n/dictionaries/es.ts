@@ -54,6 +54,7 @@ export const es: Dictionary = {
     ariaLabel: "Secciones de la página",
     navigatingTo: "Navegando a {label}.",
     labels: {
+      about: "Inicio",
       ticketing: "Ticketing y acceso",
       "seat-selection": "Selección de asientos",
       "stadium-editor": "Editor visual",

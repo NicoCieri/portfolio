@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { portfolioSections, type PortfolioSectionId } from "@/content/section-navigation";
 
 const HOME_SECTION_ID = "about";
+const TOP_ALIAS_ID = "top";
 // `#work` wraps the first project; once that scene is current the URL uses its own id.
 const WORK_ALIAS_ID = "work";
 
@@ -17,7 +18,7 @@ function replaceUrlHash(sectionId: string | null) {
 export function useSectionNavigation() {
   const [navigation, setNavigation] = useState<{ visible: boolean; activeId: PortfolioSectionId; pendingId: PortfolioSectionId | null }>({
     visible: false,
-    activeId: "ticketing",
+    activeId: "about",
     pendingId: null,
   });
 
@@ -28,16 +29,15 @@ export function useSectionNavigation() {
     });
     if (!sections.length) return;
 
-    const about = document.getElementById(HOME_SECTION_ID);
-    const urlSections = about ? [{ id: HOME_SECTION_ID, element: about }, ...sections] : sections;
-    const heldSectionIds = new Set<string>([HOME_SECTION_ID, WORK_ALIAS_ID, ...sections.map(({ id }) => id)]);
+    const firstProjectId = sections.find(({ id }) => id !== HOME_SECTION_ID)?.id;
+    const heldSectionIds = new Set<string>([HOME_SECTION_ID, TOP_ALIAS_ID, WORK_ALIAS_ID, ...sections.map(({ id }) => id)]);
     // A load or history traversal keeps its hash until that target is on screen.
     let heldHash: string | null = window.location.hash || null;
     let frame = 0;
 
     function currentUrlSection(readingLine: number, atPageEnd: boolean) {
       let urlSectionId: string | null = null;
-      for (const section of urlSections) {
+      for (const section of sections) {
         if (section.element.getBoundingClientRect().top <= readingLine) urlSectionId = section.id;
       }
       if (atPageEnd) urlSectionId = sections[sections.length - 1].id;
@@ -54,7 +54,7 @@ export function useSectionNavigation() {
         if (window.scrollY <= 8) heldHash = null;
         return heldHash === null;
       }
-      const arrived = urlSectionId === heldId || (heldId === WORK_ALIAS_ID && urlSectionId === sections[0].id);
+      const arrived = urlSectionId === heldId || ((heldId === HOME_SECTION_ID || heldId === TOP_ALIAS_ID) && window.scrollY <= 8) || (heldId === WORK_ALIAS_ID && urlSectionId === firstProjectId);
       if (arrived || !heldSectionIds.has(heldId) || !document.getElementById(heldId)) heldHash = null;
       return heldHash === null;
     }
@@ -65,8 +65,8 @@ export function useSectionNavigation() {
 
     function update() {
       frame = 0;
-      // The rail starts only after Ticketing reaches the top of the viewport.
-      const visible = sections[0].element.getBoundingClientRect().top <= 1;
+      // Keep the full page journey available, including the hero.
+      const visible = true;
       const readingLine = window.innerHeight * 0.35;
       let activeId = sections[0].id;
       for (const section of sections) {

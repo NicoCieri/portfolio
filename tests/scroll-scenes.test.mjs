@@ -332,6 +332,49 @@ test("seat confirmation keeps keyboard focus when the Continue control disappear
   assert.equal(h.isReviewFocused(), true);
 });
 
+test("section navigation includes Home, returns to the hero and preserves the work alias", () => {
+  let effect, navigation;
+  const frames = new Map();
+  const browser = { ...events(), innerHeight: 1000, scrollY: 0, location: { pathname: "/es", search: "", hash: "" } };
+  browser.requestAnimationFrame = callback => { frames.set(1, callback); return 1; };
+  browser.cancelAnimationFrame = id => frames.delete(id);
+  browser.history = { state: null, replaceState: (_, __, url) => { browser.location.hash = url.includes("#") ? url.slice(url.indexOf("#")) : ""; } };
+  const load = sourceLoader({ react: {
+    useState: initial => { navigation ??= initial; return [navigation, update => { navigation = typeof update === "function" ? update(navigation) : update; }]; },
+    useEffect: callback => { effect = callback; },
+  } }, {
+    window: browser,
+    document: { body: {}, documentElement: { scrollHeight: 60000 }, getElementById: id => elements[id] },
+    ResizeObserver: class { observe() {} disconnect() {} },
+  });
+  const sections = load("@/content/section-navigation").portfolioSections;
+  const elements = Object.fromEntries(sections.map(({ id }, index) => [id, { getBoundingClientRect: () => ({ top: (index === 0 ? 80 : 1000 + (index - 1) * 6000) - browser.scrollY }) }]));
+  elements.top = { getBoundingClientRect: () => ({ top: -browser.scrollY }) };
+  const hook = load("@/hooks/use-section-navigation").useSectionNavigation();
+  const cleanup = effect();
+  const flush = () => { const callbacks = [...frames.values()]; frames.clear(); callbacks.forEach(callback => callback()); };
+  assert.equal(sections[0].id, "about");
+  assert.equal(navigation.activeId, "about");
+  assert.equal(navigation.visible, true);
+  assert.equal(browser.location.hash, "");
+  browser.scrollY = 1000; browser.emit("scroll"); flush();
+  assert.equal(navigation.activeId, "ticketing");
+  hook.selectSection("about");
+  assert.equal(navigation.pendingId, "about");
+  browser.location.hash = "#top"; browser.emit("popstate");
+  browser.scrollY = 500; flush();
+  assert.equal(browser.location.hash, "#top");
+  browser.scrollY = 0; browser.emit("scroll"); flush();
+  assert.equal(navigation.activeId, "about");
+  assert.equal(navigation.pendingId, null);
+  assert.equal(browser.location.hash, "");
+  browser.location.hash = "#work"; browser.emit("popstate");
+  browser.scrollY = 1000; flush();
+  assert.equal(browser.location.hash, "#ticketing");
+  cleanup();
+  assert.equal(browser.handlers.size, 0);
+});
+
 test("footer language navigation restores its position before revealing the new document", () => {
   const scripts = sourceLoader()("@/lib/footer-navigation");
   for (const hash of ["#site-footer", "#contact", ""]) {

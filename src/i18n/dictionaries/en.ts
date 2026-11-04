@@ -52,6 +52,7 @@ export const en = {
     ariaLabel: "Page sections",
     navigatingTo: "Navigating to {label}.",
     labels: {
+      about: "Home",
       ticketing: "Ticketing & access",
       "seat-selection": "Seat selection",
       "stadium-editor": "Visual editor",

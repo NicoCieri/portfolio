@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 export function RootDocument({ locale, children }: { locale: Locale; children: ReactNode }) {
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geist.variable} ${geistMono.variable}`}>
+      <body id="top" className={`${geist.variable} ${geistMono.variable}`}>
         <script dangerouslySetInnerHTML={{ __html: footerNavigationStart + `try{document.documentElement.dataset.theme=localStorage.getItem("portfolio-theme")==="dark"?"dark":"light"}catch{}` }} />
         <LocaleProvider locale={locale}>{children}</LocaleProvider>
         <script dangerouslySetInnerHTML={{ __html: footerNavigationRestore }} />

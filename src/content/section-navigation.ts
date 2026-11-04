@@ -1,4 +1,5 @@
 export const portfolioSections = [
+  { id: "about", label: "Home" },
   { id: "ticketing", label: "Ticketing & access" },
   { id: "seat-selection", label: "Seat selection" },
   { id: "stadium-editor", label: "Visual editor" },

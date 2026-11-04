@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import { portfolioSections } from "@/content/section-navigation";
 import { useSectionNavigation } from "@/hooks/use-section-navigation";
 import { useTranslations } from "@/hooks/use-translations";
@@ -14,7 +14,7 @@ const markerMotion = "duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] motion-red
 function SectionLabel({ label, index }: { label: string; index: number }) {
   return (
     <>
-      <span className="shrink-0 font-mono text-[11px] font-semibold tabular-nums">{String(index + 1).padStart(2, "0")}</span>
+      <span className="shrink-0 font-mono text-[11px] font-semibold tabular-nums">{String(index).padStart(2, "0")}</span>
       <span className={labelClass}>{label}</span>
     </>
   );
@@ -46,18 +46,18 @@ export function SectionNavigation() {
               return (
               <li key={id}>
                 <Button variant="custom" size="custom"
-                  href={`#${id}`}
+                  href={id === "about" ? "#top" : `#${id}`}
                   aria-label={label}
                   aria-current={isCurrent ? "location" : undefined}
                   aria-busy={pendingId === id || undefined}
                   data-pending={pendingId === id}
                   title={label}
-                  onClick={(event) => {
-                    if (isCurrent) {
+                  onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    if (isCurrent && id !== "about") {
                       event.preventDefault();
                       return;
                     }
-                    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                     selectSection(id);
                   }}
                   className={`${rowClass} relative isolate text-foreground before:pointer-events-none before:absolute before:inset-1 before:-z-1 before:rounded-full before:bg-foreground/8 before:opacity-0 before:transition-[background-color,opacity] before:duration-200 before:ease-out hover:before:opacity-100 data-[pending=true]:before:bg-accent/12 data-[pending=true]:before:opacity-100 active:before:bg-accent/25 active:before:opacity-100 data-[pending=true]:active:before:bg-accent/25 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--focus-ring) forced-colors:aria-[current=location]:outline-2 forced-colors:aria-[current=location]:-outline-offset-2`}
