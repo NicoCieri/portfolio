@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { Button } from "@/components/button";
@@ -43,12 +45,13 @@ export function SeatSelectionExperience() {
         </div>
         <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
           {steps.map(({ id, number, title, copy }) => (
-            <li key={id} className={`border-t-2 border-foreground/10 pt-3 ${id === "explore" ? "group-data-[phase=explore]/booking:border-accent" : id === "section" ? "group-data-[phase=section]/booking:border-accent" : "group-data-[view=seats]/booking:border-accent"}`}>
+            <li key={id} data-booking-step={number === "01" ? "1" : number === "02" ? "2" : "3"} aria-current={id === "explore" ? "step" : undefined} className={`border-t-2 border-foreground/10 pt-3 ${id === "explore" ? "group-data-[step=1]/booking:border-accent" : id === "section" ? "group-data-[step=2]/booking:border-accent" : "group-data-[step=3]/booking:border-accent"}`}>
               <p className="text-[13px] leading-snug font-semibold min-[701px]:text-body"><span className="mb-1 block font-mono text-[11px] text-accent min-[701px]:mr-3 min-[701px]:inline">{number}</span>{title}</p>
               <p className="mt-1 hidden text-small text-secondary min-[701px]:block">{copy}</p>
             </li>
           ))}
         </ol>
+        <DemoProgress className="page-shell" />
       </div>
       <p data-booking-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="page-shell py-5 text-small">{t.noscript}</p></noscript>

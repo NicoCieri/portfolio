@@ -11,15 +11,20 @@ export function useAirportLayout() {
     const art = element?.querySelector<HTMLElement>("[data-airport-art]");
     if (!element || !viewport || !art) return;
     let frame: number | null = null;
+    function flowChildren(parent: Element): HTMLElement[] {
+      return Array.from(parent.children).flatMap(child => {
+        const style = getComputedStyle(child);
+        if (style.display === "none" || style.position === "absolute" || style.position === "fixed") return [];
+        // DemoPlayer has no box on desktop; its children are the flex items.
+        return style.display === "contents" ? flowChildren(child) : [child as HTMLElement];
+      });
+    }
     function measure() {
       frame = null;
       if (!element || !viewport || !art) return;
       const style = getComputedStyle(viewport);
-      const flow = Array.from(viewport.children).filter(child => {
-        const childStyle = getComputedStyle(child);
-        return childStyle.position !== "absolute" && childStyle.display !== "none";
-      });
-      const used = flow.reduce((height, child) => height + (child as HTMLElement).offsetHeight, 0) - element.offsetHeight;
+      const flow = flowChildren(viewport);
+      const used = flow.reduce((height, child) => height + child.offsetHeight, 0) - element.offsetHeight;
       const spacing = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + (parseFloat(style.rowGap) || 0) * Math.max(0, flow.length - 1);
       const available = style.position === "sticky" ? Math.max(0, viewport.clientHeight - used - spacing - 4) : Infinity;
       const scale = Math.min(1, element.clientWidth / art.offsetWidth, available / art.offsetHeight);

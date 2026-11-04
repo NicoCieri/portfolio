@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { useScrollScene } from "@/hooks/use-scroll-scene";
 import { useTranslations } from "@/hooks/use-translations";
-import { sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
+import { SCENE_ENTRY_SCREENS, sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const pointerStops = [
@@ -25,8 +25,10 @@ export function useAirportScroll() {
     let previous = "";
     return {
       update(reducedMotion, playbackProgress) {
-        const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, sceneScreenHeight(viewport));
-        const progress = reducedMotion ? 1 : playbackProgress ?? clamp(-root.getBoundingClientRect().top / distance);
+        const screenHeight = sceneScreenHeight(viewport);
+        const entryLead = screenHeight * SCENE_ENTRY_SCREENS;
+        const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead);
+        const progress = reducedMotion ? 1 : playbackProgress ?? clamp((entryLead - root.getBoundingClientRect().top) / distance);
         const phase = progress < 0.34 ? 0 : progress < 0.57 ? 1 : progress < 0.84 ? 2 : 3;
         const searchState = progress < 0.035 ? "idle" : progress < 0.105 ? "typing" : progress < 0.23 ? "loading" : "ready";
         root.dataset.searchState = searchState;

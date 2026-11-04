@@ -114,10 +114,8 @@ export const en = {
       { title: "Reveal detail", copy: "Show the right information at each step." },
       { title: "Guide decisions", copy: "Make the next action feel clear." },
     ],
-    announcement:
-      "A fictional seat selection journey on desktop and mobile: zoom into the map and enter N-02, with curved rows and only one available seat. Return to the map and enter N-03, with straight rows and a central aisle, then pan and zoom its seats. Both screens select three adjacent seats in row D, 08 through 10. No real booking is made.",
-    noscript:
-      "This SVG concept compares N-02, with curved rows and one available seat, with N-03, with straight rows, a central aisle and three adjacent seats selected after returning to the map. Scroll animation requires JavaScript.",
+    announcement: "A fictional seat selection journey: explore the venue map, enter section N-03, zoom into row D and select seats 08, 09 and 10. Confirm to complete the demo. No real booking is made.",
+    noscript: "A fictional seat selection journey: explore the venue map, enter section N-03, zoom into row D and select seats 08, 09 and 10. Confirm to complete the demo. No real booking is made.",
     ui: {
       mapLabel: "Seat selection demonstration",
       continue: "Continue",
@@ -128,11 +126,11 @@ export const en = {
         firstSection: "02 · Enter N-02",
         limited: "03 · Only one seat left",
         back: "04 · Return to the map",
-        section: "05 · Enter N-03",
-        seatZoom: "06 · Zoom into the seats",
-        pan: "07 · Drag towards row D",
-        select: "08 · Choose 08, 09 and 10",
-        continue: "09 · Continue",
+        section: "02 · Enter N-03",
+        seatZoom: "03 · Zoom into the seats",
+        pan: "04 · Drag towards row D",
+        select: "05 · Choose 08, 09 and 10",
+        continue: "06 · Continue",
       },
       tickets: "Orbit / Tickets",
       ticketsLabel: "Tickets",
@@ -460,7 +458,6 @@ export const en = {
     intro2: ", giving me more room to explore, build in parallel and refine what ships.",
     deliveryAria: "AI-assisted delivery",
     stages: ["My direction", "Agent teams", "Features delivered"],
-    scrollToDeliver: "Scroll to deliver ↓",
     deliverables: [
       { label: "Checkout flow", lines: ["Checkout", "flow"] },
       { label: "Admin dashboard", lines: ["Admin", "dashboard"] },

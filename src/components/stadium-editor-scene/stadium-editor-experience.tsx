@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
@@ -44,6 +46,7 @@ export function StadiumEditorExperience() {
             </li>
           ))}
         </ol>
+        <DemoProgress className="page-shell" />
       </div>
       <p data-editor-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="page-shell py-5 text-small">{t.noscript}</p></noscript>

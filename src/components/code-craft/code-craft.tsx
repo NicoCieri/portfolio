@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { viewportReflowClass } from "@/components/scene-classes";
@@ -34,10 +36,7 @@ export function CodeCraft() {
         <ol className="grid grid-cols-3 gap-3" aria-label={t.deliveryAria}>
           {t.stages.map((label, index) => <li key={label} className={`border-t-2 border-border pt-2 text-[11px] font-medium text-secondary min-[701px]:text-small ${active[index]}`}><span className="mr-2 font-mono text-accent">0{index + 1}</span>{label}</li>)}
         </ol>
-        <div aria-hidden="true" className="hidden items-center gap-3 text-[11px] text-secondary min-[701px]:flex">
-          <span className="shrink-0">{t.scrollToDeliver}</span>
-          <div className="h-0.5 flex-1 bg-border"><div className="h-full origin-left scale-x-(--craft-progress) bg-accent motion-reduce:scale-x-100" /></div>
-        </div>
+        <DemoProgress progress="--craft-progress" />
         </div>
       </div>
     </CraftScrollScene>

@@ -1,6 +1,6 @@
 "use client";
 
-import { sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
+import { SCENE_ENTRY_SCREENS, sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
 import { useCallback } from "react";
 import { useScrollScene } from "@/hooks/use-scroll-scene";
 import { useTranslations } from "@/hooks/use-translations";
@@ -24,7 +24,7 @@ export function useTicketingScroll() {
     function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       // Start on entry and finish before the final sticky hold.
-      const entryLead = screenHeight;
+      const entryLead = screenHeight * SCENE_ENTRY_SCREENS;
       const range = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead);
       const progress = reducedMotion ? 1 : playbackProgress ?? Math.max(0, Math.min(1, (entryLead - root.getBoundingClientRect().top) / range));
       const eased = smoothProgress(progress / 0.5);

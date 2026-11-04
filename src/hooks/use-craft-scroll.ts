@@ -1,6 +1,6 @@
 "use client";
 
-import { sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
+import { SCENE_ENTRY_SCREENS, sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
 import { useCallback } from "react";
 import { useScrollScene } from "@/hooks/use-scroll-scene";
 import { agentRoutes, featureCompletion, workflowStage } from "@/components/code-craft/workflow";
@@ -57,13 +57,14 @@ export function useCraftScroll() {
 
     function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
+      const entryLead = screenHeight * SCENE_ENTRY_SCREENS;
       root.dataset.motion = String(!reducedMotion);
       if (reducedMotion) {
         updateGraph(1);
         root.removeAttribute("data-stage");
         return;
       }
-      updateGraph(playbackProgress ?? clamp(-root.getBoundingClientRect().top / scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight)));
+      updateGraph(playbackProgress ?? clamp((entryLead - root.getBoundingClientRect().top) / scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead)));
     }
 
     return { update };

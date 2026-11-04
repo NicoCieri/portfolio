@@ -5,6 +5,9 @@ export function sceneScreenHeight(viewport: HTMLElement) {
   return window.matchMedia("(max-width: 700px)").matches ? viewport.offsetHeight : window.innerHeight;
 }
 
+// Begin while a scene enters the screen, before its viewport sticks at the top.
+export const SCENE_ENTRY_SCREENS = 1;
+
 // Reserve most of a screen of sticky travel after the narrative reaches 100%.
 // Scene wrappers add one screen of height so the existing actions keep their spacing.
 export function scrollSceneRange(sectionHeight: number, viewportHeight: number, windowHeight: number, entryLead = 0) {

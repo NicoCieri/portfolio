@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
@@ -36,7 +38,7 @@ export function BackofficeExperience() {
         <li className="border-t-2 border-foreground/10 pt-3 group-data-[phase=saving]/backoffice:border-accent"><p className="text-small font-semibold max-[700px]:text-[11px] max-[700px]:leading-tight"><span className="mr-2 font-mono text-[11px] text-accent max-[700px]:mb-1 max-[700px]:block">02</span>{t.steps[1].title}</p><p className="mt-1 hidden text-small text-secondary min-[701px]:block">{t.steps[1].copy}</p></li>
         <li className="border-t-2 border-foreground/10 pt-3 group-data-[phase=error]/backoffice:border-accent group-data-[phase=retry]/backoffice:border-accent group-data-[phase=saved]/backoffice:border-accent"><p className="text-small font-semibold max-[700px]:text-[11px] max-[700px]:leading-tight"><span className="mr-2 font-mono text-[11px] text-accent max-[700px]:mb-1 max-[700px]:block">03</span>{t.steps[2].title}</p><p className="mt-1 hidden text-small text-secondary min-[701px]:block">{t.steps[2].copy}</p></li>
       </ol>
-      <div className="page-shell hidden h-0.5 overflow-hidden min-[701px]:block rounded-full bg-foreground/10" aria-hidden="true"><div className="h-full origin-left scale-x-(--bo-progress) bg-accent motion-reduce:scale-x-100" /></div>
+      <DemoProgress progress="--bo-progress" className="page-shell" />
       </div>
       <p data-backoffice-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="page-shell py-5 text-small">{t.noscript}</p></noscript>

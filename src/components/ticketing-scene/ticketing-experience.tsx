@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass } from "@/components/mobile-demo-stage";
@@ -42,7 +44,7 @@ export function TicketingExperience() {
             </div>
             <p className="hidden max-w-[42ch] rounded-md bg-surface/90 px-3 py-1.5 text-[12px] leading-relaxed min-[701px]:block min-[701px]:text-meta">{t.disclaimerLine1}</p>
           </div>
-          <div className="hidden h-1 overflow-hidden min-[701px]:block rounded-full bg-foreground/15" aria-hidden="true"><div className="h-full origin-left scale-x-[var(--scene-scroll,0)] rounded-full bg-foreground motion-reduce:scale-x-100" /></div>
+          <DemoProgress progress="--scene-scroll" />
         </footer>
       </div>
       <p data-validation-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>

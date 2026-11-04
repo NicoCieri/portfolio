@@ -1,5 +1,7 @@
 "use client";
 
+import { DemoProgress } from "@/components/demo-progress";
+
 import { DemoPlayer } from "@/components/demo-player";
 
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
@@ -40,7 +42,7 @@ export function CommerceExperience() {
           <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
             {steps.map(({ number, title, copy, active }) => <li key={number} className={`border-t-2 border-foreground/10 pt-3 ${active}`}><p className="text-[12px] leading-snug font-semibold min-[701px]:text-small"><span className="mb-1 block font-mono text-[11px] text-accent min-[701px]:mr-3 min-[701px]:inline">{number}</span>{title}</p><p className="mt-1 hidden text-small text-secondary min-[901px]:block">{copy}</p></li>)}
           </ol>
-          <div aria-hidden="true" className="page-shell hidden h-1 overflow-hidden min-[701px]:block rounded-full bg-foreground/10"><div className="h-full origin-left scale-x-(--commerce-progress) rounded-full bg-accent motion-reduce:scale-x-100" /></div>
+          <DemoProgress progress="--commerce-progress" className="page-shell" />
         </div>
         <p data-commerce-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
         <noscript><p className="page-shell py-4 text-small">{t.noscript}</p></noscript>

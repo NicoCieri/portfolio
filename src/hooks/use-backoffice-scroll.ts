@@ -1,6 +1,6 @@
 "use client";
 
-import { sceneScreenHeight, SCENE_INTRO_SCREENS, mapSceneProgress, sceneContentReveal, scrollSceneRange } from "@/lib/scroll-scene";
+import { SCENE_ENTRY_SCREENS, sceneScreenHeight, SCENE_INTRO_SCREENS, mapSceneProgress, sceneContentReveal, scrollSceneRange } from "@/lib/scroll-scene";
 import { useCallback } from "react";
 import { useScrollScene } from "@/hooks/use-scroll-scene";
 import { useTranslations } from "@/hooks/use-translations";
@@ -25,11 +25,12 @@ export function useBackofficeScroll() {
     function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
       const bounds = root.getBoundingClientRect();
+      const entryLead = screenHeight * SCENE_ENTRY_SCREENS;
       const introDistance = screenHeight * SCENE_INTRO_SCREENS;
-      const distance = Math.max(1, scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight) - introDistance);
-      const reveal = reducedMotion || playbackProgress !== undefined ? 1 : sceneContentReveal(-bounds.top, screenHeight);
+      const distance = Math.max(1, scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead) - introDistance);
+      const reveal = reducedMotion || playbackProgress !== undefined ? 1 : sceneContentReveal(entryLead - bounds.top, screenHeight);
       root.style.setProperty("--scene-content-reveal", String(reveal));
-      const scrollProgress = reducedMotion ? 1 : playbackProgress ?? clamp((-bounds.top - introDistance) / distance);
+      const scrollProgress = reducedMotion ? 1 : playbackProgress ?? clamp((entryLead - bounds.top - introDistance) / distance);
       const p = mapSceneProgress(scrollProgress, scrollIntervals);
       const phase = p < 0.2 ? "queue" : p < 0.43 ? "inspect" : p < 0.58 ? "saving" : p < 0.73 ? "error" : p < 0.87 ? "retry" : "saved";
       const changed = phase === "saving" || phase === "retry" || phase === "saved";

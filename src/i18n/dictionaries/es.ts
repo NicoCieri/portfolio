@@ -104,7 +104,7 @@ export const es: Dictionary = {
   },
   seatSelection: {
     eyebrow: "02 / Selección de asientos",
-    headingLine1: "De los mapas del venue",
+    headingLine1: "De los mapas del estadio",
     headingLine2: "a la ",
     headingAccent: "selección de asientos.",
     description:
@@ -116,25 +116,23 @@ export const es: Dictionary = {
       { title: "Revelar el detalle", copy: "Mostrá la información justa en cada paso." },
       { title: "Guiar decisiones", copy: "Hacé que la próxima acción se sienta clara." },
     ],
-    announcement:
-      "Un recorrido ficticio de selección de asientos en escritorio y mobile: acercá el mapa y entrá a N-02, con filas curvas y un solo asiento disponible. Volvé al mapa y entrá a N-03, con una grilla recta y un pasillo central; desplazate y acercá sus asientos. Ambas pantallas seleccionan tres asientos contiguos en la fila D, del 08 al 10. No se realiza ninguna reserva real.",
-    noscript:
-      "Este concepto en SVG compara N-02, con filas curvas y un asiento disponible, con N-03, con filas rectas, un pasillo central y tres asientos contiguos seleccionados tras volver al mapa. La animación al desplazar requiere JavaScript.",
+    announcement: "Un recorrido ficticio de selección de asientos: explorá el mapa, entrá a la sección N-03, acercá la fila D y elegí los asientos 08, 09 y 10. Confirmá para completar la demo. No se realiza ninguna reserva real.",
+    noscript: "Un recorrido ficticio de selección de asientos: explorá el mapa, entrá a la sección N-03, acercá la fila D y elegí los asientos 08, 09 y 10. Confirmá para completar la demo. No se realiza ninguna reserva real.",
     ui: {
       mapLabel: "Demostración de selección de asientos",
       continue: "Continuar",
       reviewTitle: "¡Disfrutá el espectáculo!",
       reviewAnnouncement: "¡Todo listo! Disfrutá el espectáculo. Demostración sin reserva real.",
       actionLabels: {
-        mapZoom: "01 · Acercá el venue",
+        mapZoom: "01 · Acercá el estadio",
         firstSection: "02 · Entrá a N-02",
         limited: "03 · Solo queda un asiento",
         back: "04 · Volvé al mapa",
-        section: "05 · Entrá a N-03",
-        seatZoom: "06 · Acercá los asientos",
-        pan: "07 · Arrastrá hacia la fila D",
-        select: "08 · Elegí 08, 09 y 10",
-        continue: "09 · Continuar",
+        section: "02 · Entrá a N-03",
+        seatZoom: "03 · Acercá los asientos",
+        pan: "04 · Arrastrá hacia la fila D",
+        select: "05 · Elegí 08, 09 y 10",
+        continue: "06 · Continuar",
       },
       tickets: "Orbit / Entradas",
       ticketsLabel: "Entradas",
@@ -174,7 +172,7 @@ export const es: Dictionary = {
     headingLine1: "Ingeniería de",
     headingAccent: "herramientas de edición visual.",
     description:
-      "Diseñé herramientas para crear y editar mapas complejos de venues y convertirlos en experiencias interactivas dentro del flujo de compra.",
+      "Diseñé herramientas para crear y editar mapas complejos de estadios y convertirlos en experiencias interactivas dentro del flujo de compra.",
     caption: "Estudio de interfaz independiente · Estadio ficticio y flujo de edición",
     stepsAria: "Principios de ingeniería de interfaces ilustrados en la demo",
     steps: [
@@ -225,7 +223,7 @@ export const es: Dictionary = {
       sectionFill: "Relleno de sección",
       oneSection: "Una sección.",
       independentGeometry: "Geometría independiente.",
-      venueFooter: "Orbit Park · Venue ficticio",
+      venueFooter: "Orbit Park · Estadio ficticio",
       sectionsCount: "16 secciones",
       north: "NORTE",
       south: "SUR",
@@ -462,7 +460,6 @@ export const es: Dictionary = {
     intro2: ", dándome más espacio para explorar, construir en paralelo y refinar lo que sale a producción.",
     deliveryAria: "Entrega asistida por IA",
     stages: ["Mi dirección", "Equipos de agentes", "Funcionalidades entregadas"],
-    scrollToDeliver: "Desplazate para entregar ↓",
     deliverables: [
       { label: "Flujo de checkout", lines: ["Flujo de", "checkout"] },
       { label: "Panel de administración", lines: ["Panel de", "administración"] },

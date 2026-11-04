@@ -1,6 +1,6 @@
 "use client";
 
-import { sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
+import { SCENE_ENTRY_SCREENS, sceneScreenHeight, scrollSceneRange } from "@/lib/scroll-scene";
 import { useCallback } from "react";
 import { useScrollScene } from "@/hooks/use-scroll-scene";
 import { editorDraftCorners, editorSectionCorners, editorSectionPath } from "@/components/stadium-editor-scene/editor-geometry";
@@ -31,6 +31,7 @@ export function useStadiumEditorScroll() {
   const t = useTranslations().stadiumEditor;
 
   return useScrollScene("[data-editor-viewport]", useCallback(({ root, viewport }) => {
+    const progressBar = root.querySelector<HTMLElement>("[data-demo-progress]");
     const announcement = root.querySelector<HTMLElement>("[data-editor-announcement]");
     const zoomLabel = root.querySelector<SVGTextElement>("[data-editor-zoom-label]");
     const polygon = root.querySelector<SVGPathElement>("[data-editor-polygon]");
@@ -40,9 +41,11 @@ export function useStadiumEditorScroll() {
 
     function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
-      const lead = screenHeight * 0.35;
+      const lead = screenHeight * SCENE_ENTRY_SCREENS;
       const distance = scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, lead);
       const progress = reducedMotion ? 1 : playbackProgress ?? clamp((lead - root.getBoundingClientRect().top) / distance);
+      const progressValue = progress.toFixed(4);
+      if (progressBar && progressBar.style.getPropertyValue("--demo-progress") !== progressValue) progressBar.style.setProperty("--demo-progress", progressValue);
       const edit = ease((progress - 0.47) / 0.07);
       const move = ease((progress - 0.58) / 0.08);
       const pan = ease((progress - 0.7) / 0.07);

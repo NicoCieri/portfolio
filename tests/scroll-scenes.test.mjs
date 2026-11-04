@@ -155,13 +155,14 @@ function sceneHarness(name, hook, locale, mobile = false) {
   const variables = new Map();
   let styleWrites = 0, stateWrites = 0;
   const map = { style: { setProperty: (name, value) => { styleWrites++; variables.set(name, value); } } };
+  const progressBar = { style: { getPropertyValue: name => variables.get(name) || "", setProperty: (name, value) => variables.set(name, value) } };
   const announcement = { textContent: "" };
   const buttons = [{ disabled: true }];
   const root = {
     ...events(), dataset: new Proxy({}, { set(target, key, value) { stateWrites++; target[key] = value; return true; } }), offsetHeight: 10000,
     style: { setProperty: (name, value) => variables.set(name, value) },
     getBoundingClientRect: () => ({ top }),
-    querySelector: selector => selector.includes("announcement") ? announcement : selector === "[data-booking-review]" ? { focus: () => { focused = true; } } : null,
+    querySelector: selector => selector === "[data-demo-progress]" ? progressBar : selector.includes("announcement") ? announcement : selector === "[data-booking-review]" ? { focus: () => { focused = true; } } : null,
     querySelectorAll: selector => selector === "[data-booking-continue]" ? buttons : selector === "[data-booking-map]" ? [map] : [],
     removeAttribute(name) { if (name === "data-stage") delete this.dataset.stage; },
   };
@@ -378,6 +379,46 @@ test("footer language navigation restores its position before revealing the new 
   }
 });
 
+test("airport sizing flattens the desktop player wrapper and fits the remaining height", () => {
+  let effect, resize;
+  const values = new Map();
+  const frames = new Map();
+  const browser = { ...events(), matchMedia: () => ({ matches: false }) };
+  const art = { offsetWidth: 820, offsetHeight: 500 };
+  const viewport = { clientHeight: 680, children: [] };
+  const stage = {
+    clientWidth: 1000,
+    get offsetHeight() { return parseFloat(this.style.height) || 440; },
+    style: { setProperty: (key, value) => values.set(key, value), height: "" },
+    closest: () => viewport, querySelector: () => art,
+  };
+  const player = { offsetHeight: 0, children: [stage] };
+  viewport.children = [{ offsetHeight: 150 }, player, { offsetHeight: 64 }, { offsetHeight: 2 }, { offsetHeight: 15 }];
+  let position = "sticky";
+  const load = sourceLoader({ react: { useRef: () => ({ current: stage }), useEffect: callback => { effect = callback; } } }, {
+    window: browser,
+    getComputedStyle: element => element === viewport
+      ? { position, paddingTop: "16px", paddingBottom: "16px", rowGap: "16px" }
+      : { position: "static", display: element === player ? "contents" : "block" },
+    requestAnimationFrame: callback => { frames.set(1, callback); return 1; },
+    cancelAnimationFrame: id => frames.delete(id),
+    ResizeObserver: class { constructor(callback) { resize = callback; } observe() {} disconnect() {} },
+  });
+  load("@/hooks/use-airport-layout").useAirportLayout();
+  const cleanup = effect();
+  assert.equal(stage.offsetHeight, 349);
+  assert.equal(values.get("--airport-scale"), "0.698");
+  const flush = () => { const callbacks = [...frames.values()]; frames.clear(); callbacks.forEach(callback => callback()); };
+  // Repeated measurements must not inflate the stage through the zero-height wrapper.
+  resize(); flush(); assert.equal(stage.offsetHeight, 349);
+  viewport.clientHeight = 620;
+  browser.emit("resize"); flush(); assert.equal(stage.offsetHeight, 289);
+  position = "static";
+  resize(); flush(); assert.equal(stage.offsetHeight, 500);
+  cleanup();
+  assert.equal(browser.handlers.size, 0);
+});
+
 test("mobile illustrations resize around text and controls, then release desktop overrides", () => {
   let effect, onResize, stopped = false, nextFrame = 0;
   const values = new Map();
@@ -481,13 +522,13 @@ for (const locale of ["en", "es"]) {
 test("airport search types a PNR before loading, reveals results and reverses cleanly", () => {
   const h = sceneHarness("airport", "useAirportScroll", "es");
   const states = [];
-  for (let top = 0; top > -3000; top -= 20) {
+  for (let top = 1000; top > -3000; top -= 20) {
     h.setTop(top); h.controller.update(false);
     if (states.at(-1) !== h.root.dataset.searchState) states.push(h.root.dataset.searchState);
     assert.equal(h.root.dataset.reservationReady, String(h.root.dataset.searchState === "ready"));
   }
   assert.deepEqual(states, ["idle", "typing", "loading", "ready"]);
-  h.setTop(0); h.controller.update(false);
+  h.setTop(1000); h.controller.update(false);
   assert.equal(h.root.dataset.searchState, "idle");
   assert.equal(h.root.dataset.reservationReady, "false");
   h.controller.update(true);
@@ -534,14 +575,58 @@ test("mobile autoplay loops only while visible, pauses hidden and respects reduc
   cleanup(); assert.equal(frames.size, 0); assert.equal(page.handlers.size, 0);
 });
 
+test("desktop demos visibly progress before the section reaches the top", () => {
+  const tracks = [
+    ["ticketing", "useTicketingScroll", "--scene-scroll"],
+    ["seat-selection", "useSeatSelectionScroll", "--demo-progress"],
+    ["stadium-editor", "useStadiumEditorScroll", "--demo-progress"],
+    ["backoffice", "useBackofficeScroll", "--bo-progress"],
+    ["commerce", "useCommerceScroll", "--commerce-progress"],
+    ["airport", "useAirportScroll", "--airport-progress"],
+    ["craft", "useCraftScroll", "--craft-progress"],
+  ];
+  for (const [name, hook, variable] of tracks) {
+    const h = sceneHarness(name, hook, "en");
+    h.setTop(1000); h.controller.update(false);
+    assert.equal(Number(h.variables.get(variable)), 0, name);
+    h.setTop(200); h.controller.update(false);
+    const entering = Number(h.variables.get(variable));
+    assert.ok(entering > 0 && entering < 1, name);
+    if (name === "backoffice" || name === "commerce") assert.equal(h.variables.get("--scene-content-reveal"), "1");
+    h.setTop(0); h.controller.update(false);
+    assert.ok(Number(h.variables.get(variable)) > entering, name);
+    h.setTop(1000); h.controller.update(false);
+    assert.equal(Number(h.variables.get(variable)), 0, name);
+  }
+});
+
 test("explicit playback progress drives every demo independently of scroll", () => {
   for (const [name, hook] of [...scenes, ["seat-selection", "useSeatSelectionScroll"], ["stadium-editor", "useStadiumEditorScroll"], ["airport", "useAirportScroll"], ["craft", "useCraftScroll"]]) {
     const h = sceneHarness(name, hook, "en", true);
     h.setTop(1000); h.controller.update(false, 0.45);
+    if (name === "seat-selection" || name === "stadium-editor") assert.equal(h.variables.get("--demo-progress"), "0.4500");
     const before = [...h.variables];
     h.setTop(-7000); h.controller.update(false, 0.45);
     assert.deepEqual([...h.variables], before, name);
     h.controller.update(false, 1);
+    if (name === "seat-selection" || name === "stadium-editor") assert.equal(h.variables.get("--demo-progress"), "1.0000");
     for (const value of h.variables.values()) assert.ok(!/NaN|Infinity/.test(value), name);
+  }
+});
+
+
+test("seat section steps follow map, detail and decisions through replay and reverse", () => {
+  for (const mobile of [false, true]) {
+    const h = sceneHarness("seat-selection", "useSeatSelectionScroll", "en", mobile);
+    const checkpoints = [[0, "1"], [0.2, "1"], [0.27, "2"], [0.35, "2"], [0.44, "2"], [0.49, "2"], [0.5, "3"], [0.65, "3"], [0.70, "3"], [0.8, "3"], [0.97, "3"], [1, "3"]];
+    for (const [progress, expected] of [...checkpoints, ...checkpoints.toReversed(), [0, "1"]]) {
+      h.controller.update(false, progress);
+      assert.equal(h.root.dataset.step, expected, `mobile=${mobile}, progress=${progress}`);
+      assert.equal(h.root.dataset.section, "N-03");
+      assert.equal(h.root.dataset.limitedVisible, "false");
+      assert.ok(!["firstSection", "limited", "back"].includes(h.root.dataset.action));
+    }
+    h.controller.update(true);
+    assert.equal(h.root.dataset.step, "3");
   }
 });

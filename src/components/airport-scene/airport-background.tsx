@@ -47,14 +47,14 @@ export function AirportBackground() {
   return (
     <div aria-hidden="true" className="max-[700px]:hidden pointer-events-none absolute inset-0 -z-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent_12%,black_30%,black_78%,transparent_98%)] forced-colors:hidden">
       {/* One shared flight surface prevents clipping at the side illustration bounds.
-          Distinct bends share ordered control points, keeping the routes separated. */}
+          Smooth cubic joins keep each plane’s heading continuous through every bend. */}
       <svg data-airport-flight-surface viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" fill="none" className="absolute inset-0 h-full w-full overflow-visible text-foreground opacity-[0.1] min-[701px]:opacity-[0.18]">
-        <FlightRoute path="M-100 100C40 -80 190 300 360 150C560 310 810 -60 1030 100C1190 280 1370 -60 1540 130" size={0.36} duration={46} delay={-8} />
-        <FlightRoute path="M1540 210C1370 70 1190 410 1030 190C810 60 560 390 360 280C190 370 40 50 -100 220" size={0.62} duration={27} delay={-18} />
-        <FlightRoute path="M-100 290C40 105 190 525 360 335C560 535 810 120 1030 325C1190 460 1370 160 1540 350" size={0.48} duration={35} delay={-24} />
-        <FlightRoute path="M1540 420C1370 265 1190 610 1030 390C810 270 560 590 360 475C190 580 40 245 -100 415" size={0.4} duration={42} delay={-12} />
-        <FlightRoute path="M-100 490C40 300 190 725 360 530C560 725 810 320 1030 520C1190 660 1370 340 1540 555" size={0.7} duration={23} delay={-16} />
-        <FlightRoute path="M1540 610C1370 455 1190 815 1030 590C810 465 560 790 360 680C190 780 40 450 -100 615" size={0.54} duration={31} delay={-25} />
+        <FlightRoute path="M-100 100C40 -80 190 300 360 150S810 -60 1030 100S1370 -60 1540 130" size={0.36} duration={46} delay={-8} />
+        <FlightRoute path="M1540 210C1370 70 1190 410 1030 190S560 390 360 280S40 50 -100 220" size={0.62} duration={27} delay={-18} />
+        <FlightRoute path="M-100 290C40 105 190 525 360 335S810 120 1030 325S1370 160 1540 350" size={0.48} duration={35} delay={-24} />
+        <FlightRoute path="M1540 420C1370 265 1190 610 1030 390S560 590 360 475S40 245 -100 415" size={0.4} duration={42} delay={-12} />
+        <FlightRoute path="M-100 490C40 300 190 725 360 530S810 320 1030 520S1370 340 1540 555" size={0.7} duration={23} delay={-16} />
+        <FlightRoute path="M1540 610C1370 455 1190 815 1030 590S560 790 360 680S40 450 -100 615" size={0.54} duration={31} delay={-25} />
       </svg>
       <svg viewBox="0 0 320 620" fill="none" className={`${sideClass} left-0 overflow-visible max-[700px]:-left-16`}>
         <g transform="translate(75 365) rotate(-6)"><Suitcase /></g>
