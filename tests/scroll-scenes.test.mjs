@@ -150,20 +150,18 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
 });
 
 function sceneHarness(name, hook, locale, mobile = false) {
-  let setup, top = 1000, focused = false;
-  class ContinueTarget { closest() { return true; } }
+  let setup, top = 1000;
   const variables = new Map();
   let styleWrites = 0, stateWrites = 0;
   const map = { style: { setProperty: (name, value) => { styleWrites++; variables.set(name, value); } } };
   const progressBar = { style: { getPropertyValue: name => variables.get(name) || "", setProperty: (name, value) => variables.set(name, value) } };
   const announcement = { textContent: "" };
-  const buttons = [{ disabled: true }];
   const root = {
     ...events(), dataset: new Proxy({}, { set(target, key, value) { stateWrites++; target[key] = value; return true; } }), offsetHeight: 10000,
     style: { setProperty: (name, value) => variables.set(name, value) },
     getBoundingClientRect: () => ({ top }),
-    querySelector: selector => selector === "[data-demo-progress]" ? progressBar : selector.includes("announcement") ? announcement : selector === "[data-booking-review]" ? { focus: () => { focused = true; } } : null,
-    querySelectorAll: selector => selector === "[data-booking-continue]" ? buttons : selector === "[data-booking-map]" ? [map] : [],
+    querySelector: selector => selector === "[data-demo-progress]" ? progressBar : selector.includes("announcement") ? announcement : null,
+    querySelectorAll: selector => selector === "[data-booking-map]" ? [map] : [],
     removeAttribute(name) { if (name === "data-stage") delete this.dataset.stage; },
   };
   let dictionary;
@@ -171,12 +169,12 @@ function sceneHarness(name, hook, locale, mobile = false) {
     react: { useCallback: fn => fn },
     "@/hooks/use-scroll-scene": { useScrollScene: (_, factory) => { setup = factory; } },
     "@/hooks/use-translations": { useTranslations: () => dictionary },
-  }, { Element: ContinueTarget, window: { innerHeight: 1000, matchMedia: query => ({ matches: query.includes("max-width") && mobile }) } });
+  }, { window: { innerHeight: 1000, matchMedia: query => ({ matches: query.includes("max-width") && mobile }) } });
   dictionary = load(`@/i18n/dictionaries/${locale}`)[locale];
   load(`@/hooks/use-${name}-scroll`)[hook]();
   const viewport = { offsetHeight: mobile ? 650 : 800 };
   const controller = setup({ root, viewport });
-  return { writes: () => ({ styleWrites, stateWrites }), root, variables, announcement, dictionary, buttons, controller, setTop: value => { top = value; }, continueWithKeyboard: () => root.emit("click", { target: new ContinueTarget() }), isReviewFocused: () => focused };
+  return { writes: () => ({ styleWrites, stateWrites }), root, variables, announcement, dictionary, controller, setTop: value => { top = value; } };
 }
 
 const scenes = [
@@ -243,10 +241,10 @@ for (const locale of ["en", "es"]) {
     }
     assert.equal(h.root.dataset.review, "true");
     h.setTop(1000); h.controller.update(false);
-    assert.equal(h.buttons[0].disabled, true);
+    assert.equal(h.root.dataset.ready, "false");
     h.controller.update(true);
-    assert.equal(h.buttons[0].disabled, false);
-    h.controller.cleanup();
+    assert.equal(h.root.dataset.ready, "true");
+    h.controller.cleanup?.();
     assert.equal(h.root.handlers.size, 0);
   });
 
@@ -321,15 +319,18 @@ test("text and primary button tokens meet AA contrast in both themes and interac
   }
 });
 
-test("seat confirmation keeps keyboard focus when the Continue control disappears", () => {
+test("seat confirmation completes and reverses without an external Continue control", () => {
   const h = sceneHarness("seat-selection", "useSeatSelectionScroll", "es", true);
-  h.setTop(-8166);
-  h.controller.update(false);
+  h.controller.update(false, 0.94);
   assert.equal(h.root.dataset.ready, "true");
   assert.equal(h.root.dataset.review, "false");
-  h.continueWithKeyboard();
+  h.controller.update(false, 0.98);
   assert.equal(h.root.dataset.review, "true");
-  assert.equal(h.isReviewFocused(), true);
+  assert.equal(h.announcement.textContent, h.dictionary.seatSelection.ui.reviewAnnouncement);
+  h.controller.update(false, 0);
+  assert.equal(h.root.dataset.ready, "false");
+  assert.equal(h.root.dataset.review, "false");
+  assert.equal(h.root.handlers.has("click"), false);
 });
 
 test("section navigation includes Home, returns to the hero and preserves the work alias", () => {

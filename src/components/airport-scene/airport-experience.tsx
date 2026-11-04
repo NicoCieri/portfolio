@@ -43,7 +43,6 @@ export function AirportExperience() {
           {t.steps.map(({ title, copy }, index) => <li key={title} className={`border-t-2 border-foreground/10 pt-2 ${stepActive[index]}`}><p className="text-[11px] leading-snug font-semibold min-[701px]:text-small"><span className="mr-2 font-mono text-[10px] text-accent max-[700px]:mb-1 max-[700px]:block">0{index + 1}</span>{title}</p><p className="mt-1 hidden text-small text-secondary min-[901px]:block">{copy}</p></li>)}
         </ol>
         <DemoProgress progress="--airport-progress" className="page-shell" />
-        <p className="page-shell hidden text-center text-[10px] text-secondary min-[701px]:block motion-reduce:hidden">{t.hint}</p>
       </div>
       <p id="airport-summary" className="sr-only">{t.summary}</p>
       <p data-airport-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.searchAnnouncements.idle}</p>

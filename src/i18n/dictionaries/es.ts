@@ -75,7 +75,6 @@ export const es: Dictionary = {
     statusScanning: "Leyendo la entrada de demo…",
     statusValidated: "Un momento. Ambos lados confirmados.",
     sides: "Asistente a la izquierda · Control a la derecha",
-    disclaimerLine1: "Interfaces ficticias · No son capturas de producto",
     announcement: "Demo lista. Desplazate para unir la entrada del asistente y el escáner de control.",
     announcements: {
       ready: "Demo lista. Desplazate para unir la entrada del asistente y el escáner de control.",
@@ -110,7 +109,6 @@ export const es: Dictionary = {
     headingAccent: "selección de asientos.",
     description:
       "Mi trabajo en la venta de entradas incluyó interfaces web y mobile para explorar mapas, comparar ubicaciones y elegir asientos, cuidando la claridad y continuidad del recorrido de compra.",
-    caption: "Estudio de interfaz independiente · Escritorio + mobile · Sin reserva real",
     stepsAria: "Principios de diseño de producto ilustrados en la demo",
     steps: [
       { title: "Preservar el contexto", copy: "Mantené el mapa general al alcance." },
@@ -123,7 +121,7 @@ export const es: Dictionary = {
       mapLabel: "Demostración de selección de asientos",
       continue: "Continuar",
       reviewTitle: "¡Disfrutá el espectáculo!",
-      reviewAnnouncement: "¡Todo listo! Disfrutá el espectáculo. Demostración sin reserva real.",
+      reviewAnnouncement: "Selección de asientos completada.",
       actionLabels: {
         mapZoom: "01 · Acercá el estadio",
         firstSection: "02 · Entrá a N-02",
@@ -174,7 +172,6 @@ export const es: Dictionary = {
     headingAccent: "herramientas de edición visual.",
     description:
       "Diseñé herramientas para crear y editar mapas complejos de estadios y convertirlos en experiencias interactivas dentro del flujo de compra.",
-    caption: "Estudio de interfaz independiente · Estadio ficticio y flujo de edición",
     stepsAria: "Principios de ingeniería de interfaces ilustrados en la demo",
     steps: [
       { title: "Crear un polígono", copy: "Dibujá una forma inicial fuera de su posición final." },
@@ -237,7 +234,6 @@ export const es: Dictionary = {
     headingAccent: "interfaces operativas.",
     description:
       "Diseñé y desarrollé backoffices desde cero para gestionar recursos y configuraciones, con interfaces claras y una estructura preparada para crecer junto al producto.",
-    caption: "Concepto de operaciones original · Demostración guiada por scroll · Sin pedidos reales",
     stepsAria: "Etapas de la demostración de backoffice",
     steps: [
       { title: "Mantener el contexto", copy: "Recorré la cola. Revelá el detalle justo." },
@@ -305,7 +301,6 @@ export const es: Dictionary = {
       { title: "Asignar un asiento", copy: "Disponibilidad de cabina vinculada al pasajero." },
       { title: "Despachar y confirmar", copy: "Peso, franquicia y pase de abordar conectados." },
     ],
-    hint: "Desplazate para seguir el check-in ↓",
     summary: "Este flujo ficticio busca una reserva, verifica documentos, asigna el asiento 12A, despacha una valija de 18 kg dentro de una franquicia de 23 kg y emite un pase de abordar de demo.",
     phases: ["Buscar al pasajero y verificar sus documentos de viaje.", "Asignar un asiento disponible junto a la ventana: 12A.", "Aceptar una valija de 18 kg, dentro de la franquicia de 23 kg.", "Check-in completo. Pase de abordar y etiqueta de equipaje de demo emitidos."],
     findReservation: "Buscar una reserva",
@@ -382,7 +377,6 @@ export const es: Dictionary = {
     headingAccent: "al checkout.",
     description:
       "Trabajé en interfaces de e-commerce para web y mobile, cuidando cada etapa de la compra para que explorar productos, elegir opciones y completar un pedido fuera simple y fluido.",
-    caption: "Estudio de interfaz independiente · Escritorio + mobile · Sin compra real",
     stepsAria: "Principios del recorrido de compra",
     steps: [
       { title: "Selección de variante", copy: "Previsualizá una variante. Mantené la elección clara." },

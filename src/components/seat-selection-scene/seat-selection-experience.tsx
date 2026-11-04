@@ -4,7 +4,6 @@ import { DemoProgress } from "@/components/demo-progress";
 
 import { DemoPlayer } from "@/components/demo-player";
 
-import { Button } from "@/components/button";
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
@@ -37,12 +36,7 @@ export function SeatSelectionExperience() {
         </header>
         <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1100px,calc((100svh-480px)*1.65))]`}>
           <DemoPlayer><MobileDemoStage fillSpace><BookingDevices /></MobileDemoStage></DemoPlayer>
-          <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
-        <div className="page-shell hidden min-h-12 items-center justify-center text-center min-[701px]:flex">
-          <Button data-booking-continue disabled size="sm" className="hidden! group-data-[ready=true]/booking:inline-flex! group-data-[review=true]/booking:hidden!">{t.ui.continue}</Button>
-          <p data-booking-review tabIndex={-1} className="hidden rounded text-small font-semibold group-data-[review=true]/booking:block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--focus-ring)">{t.ui.reviewAnnouncement}</p>
-        </div>
         <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
           {steps.map(({ id, number, title, copy }) => (
             <li key={id} data-booking-step={number === "01" ? "1" : number === "02" ? "2" : "3"} aria-current={id === "explore" ? "step" : undefined} className={`border-t-2 border-foreground/10 pt-3 ${id === "explore" ? "group-data-[step=1]/booking:border-accent" : id === "section" ? "group-data-[step=2]/booking:border-accent" : "group-data-[step=3]/booking:border-accent"}`}>

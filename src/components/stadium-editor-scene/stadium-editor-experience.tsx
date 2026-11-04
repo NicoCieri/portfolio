@@ -36,7 +36,6 @@ export function StadiumEditorExperience() {
         </header>
         <figure className={`${mobileDemoFigureClass} page-shell max-[700px]:max-w-[320px] max-[700px]:[@media(max-height:820px)]:max-w-[280px] min-[701px]:max-[900px]:max-w-[min(560px,calc((100svh-480px)*1.05))] min-[901px]:max-w-[min(1000px,calc((100svh-488px)*1.55))] min-[701px]:[@media(max-height:820px)]:max-w-[min(760px,calc((100svh-340px)*1.55))]`}>
           <DemoPlayer><MobileDemoStage fillSpace><EditorMonitor /></MobileDemoStage></DemoPlayer>
-          <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
         <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
           {steps.map(({ id, number, title, copy }) => (

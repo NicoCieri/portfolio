@@ -73,7 +73,6 @@ export const en = {
     statusScanning: "Reading the demo ticket…",
     statusValidated: "One moment. Both sides confirmed.",
     sides: "Attendee on the left · Controller on the right",
-    disclaimerLine1: "Fictional interfaces · Not product screenshots",
     announcement: "Demo ready. Scroll to bring the attendee ticket and controller scanner together.",
     announcements: {
       ready: "Demo ready. Scroll to bring the attendee ticket and controller scanner together.",
@@ -108,7 +107,6 @@ export const en = {
     headingAccent: "seat selection.",
     description:
       "My work in ticketing included web and mobile interfaces for exploring venue maps, comparing seating options, and choosing seats, with attention to clarity and continuity throughout the purchase journey.",
-    caption: "Independent interface study · Desktop + mobile · No real booking",
     stepsAria: "Product design principles illustrated in the demo",
     steps: [
       { title: "Preserve context", copy: "Keep the overall map within reach." },
@@ -121,7 +119,7 @@ export const en = {
       mapLabel: "Seat selection demonstration",
       continue: "Continue",
       reviewTitle: "Enjoy the show!",
-      reviewAnnouncement: "All set! Enjoy the show. Demonstration with no real booking.",
+      reviewAnnouncement: "Seat selection complete.",
       actionLabels: {
         mapZoom: "01 · Zoom into the venue",
         firstSection: "02 · Enter N-02",
@@ -172,7 +170,6 @@ export const en = {
     headingAccent: "visual editing tools.",
     description:
       "I designed tools to create and edit complex venue maps and turn them into interactive experiences within the purchase flow.",
-    caption: "Independent interface study · Fictional stadium and editing workflow",
     stepsAria: "Interface engineering principles illustrated in the demo",
     steps: [
       { title: "Create a polygon", copy: "Draw a rough shape away from its final position." },
@@ -235,7 +232,6 @@ export const en = {
     headingAccent: "operational interfaces.",
     description:
       "I designed and built backoffice tools from scratch to manage resources and configurations, with clear interfaces and a structure ready to grow with the product.",
-    caption: "Original operations concept · Scroll-driven demonstration · No real orders",
     stepsAria: "Stages of the backoffice demonstration",
     steps: [
       { title: "Keep context", copy: "Scan the queue. Reveal the right detail." },
@@ -303,7 +299,6 @@ export const en = {
       { title: "Assign a seat", copy: "Cabin availability linked to the passenger." },
       { title: "Check bags & confirm", copy: "Weight, allowance and boarding pass, connected." },
     ],
-    hint: "Scroll to follow the check-in ↓",
     summary: "This fictional flow finds a reservation, verifies documents, assigns seat 12A, checks one 18 kg bag within a 23 kg allowance and issues a demo boarding pass.",
     phases: ["Find the passenger and verify their travel documents.", "Assign an available window seat: 12A.", "Accept an 18 kg bag, within the 23 kg allowance.", "Check-in complete. Demo boarding pass and bag tag issued."],
     findReservation: "Find a reservation",
@@ -380,7 +375,6 @@ export const en = {
     headingAccent: "to checkout.",
     description:
       "I worked on e-commerce interfaces for web and mobile, taking care at every stage of the purchase journey to make exploring products, choosing options, and placing an order simple and seamless.",
-    caption: "Independent interface study · Desktop + mobile · No real purchase",
     stepsAria: "Shopping journey principles",
     steps: [
       { title: "Variant selection", copy: "Preview a variant. Keep the choice clear." },

@@ -31,7 +31,6 @@ export function useSeatSelectionScroll() {
     const announcement = root.querySelector<HTMLElement>("[data-booking-announcement]");
 
     const maps = Array.from(root.querySelectorAll<SVGSVGElement>("[data-booking-map]"));
-    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-booking-continue]"));
     const steps = Array.from(root.querySelectorAll<HTMLElement>("[data-booking-step]"));
     const previousProperties = new Map<string, string>();
     function writeProperty(name: string, value: string) {
@@ -46,7 +45,6 @@ export function useSeatSelectionScroll() {
     let lastPhase = "";
     let lastAction = "";
     let lastCount = -1;
-    let continued = false;
 
     function update(reducedMotion: boolean, playbackProgress?: number) {
       const screenHeight = sceneScreenHeight(viewport);
@@ -65,8 +63,7 @@ export function useSeatSelectionScroll() {
       const selecting = (p >= 0.52 && p < 0.55) || (p >= 0.64 && p < 0.67) || (p >= 0.76 && p < 0.79);
       const panning = p >= 0.40 && p < 0.48;
       const pressingContinue = !reducedMotion && p >= 0.945 && p < 0.965;
-      if (count < 3) continued = false;
-      const review = continued || (!reducedMotion && p >= 0.965);
+      const review = !reducedMotion && p >= 0.965;
       const secondGrid = ease((p - 0.24) / 0.04);
       const sectionPress = p >= 0.21 && p < 0.24;
       const action = review ? "review" : p < 0.18 ? "mapZoom" : p < 0.28 ? "section" : p < 0.40 ? "seatZoom" : p < 0.5 ? "pan" : count < 3 ? "select" : "continue";
@@ -115,7 +112,6 @@ export function useSeatSelectionScroll() {
       writeState("mapVisible", String(properties["--booking-map-opacity"] > 0));
       writeState("limitedVisible", "false");
       writeState("gridVisible", String(secondGrid > 0));
-      if (count !== lastCount) for (const button of buttons) button.disabled = count !== 3;
       if (phase !== lastPhase || action !== lastAction || count !== lastCount) {
         lastPhase = phase;
         lastAction = action;
@@ -126,14 +122,6 @@ export function useSeatSelectionScroll() {
       }
     }
 
-    function handleContinue(event: MouseEvent) {
-      if (!(event.target instanceof Element) || !event.target.closest("[data-booking-continue]") || root?.dataset.ready !== "true") return;
-      continued = true;
-      update(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-      root.querySelector<HTMLElement>("[data-booking-review]")?.focus({ preventScroll: true });
-    }
-    root.addEventListener("click", handleContinue);
-
-    return { update, cleanup: () => root.removeEventListener("click", handleContinue) };
+    return { update };
   }, [t]));
 }

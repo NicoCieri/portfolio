@@ -31,7 +31,6 @@ export function BackofficeExperience() {
       </header>
       <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1100px,calc((100svh-428px)*2.12))]`}>
         <DemoPlayer><MobileDemoStage fillSpace><MobileOperationsIllustration /><div className="hidden min-[701px]:block"><OperationsIllustration /></div></MobileDemoStage></DemoPlayer>
-        <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
       </figure>
       <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
         <li className="border-t-2 border-foreground/10 pt-3 group-data-[phase=queue]/backoffice:border-accent group-data-[phase=inspect]/backoffice:border-accent"><p className="text-small font-semibold max-[700px]:text-[11px] max-[700px]:leading-tight"><span className="mr-2 font-mono text-[11px] text-accent max-[700px]:mb-1 max-[700px]:block">01</span>{t.steps[0].title}</p><p className="mt-1 hidden text-small text-secondary min-[701px]:block">{t.steps[0].copy}</p></li>

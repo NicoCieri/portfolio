@@ -42,7 +42,6 @@ export function TicketingExperience() {
               <p className="hidden group-data-[validated=true]/ticketing:block motion-reduce:block">{t.statusValidated}</p>
               <p className="mt-1 text-meta font-normal">{t.sides}</p>
             </div>
-            <p className="hidden max-w-[42ch] rounded-md bg-surface/90 px-3 py-1.5 text-[12px] leading-relaxed min-[701px]:block min-[701px]:text-meta">{t.disclaimerLine1}</p>
           </div>
           <DemoProgress progress="--scene-scroll" />
         </footer>
