@@ -35,7 +35,7 @@ export function SeatSelectionExperience() {
           <MobileDemoStage><BookingDevices /></MobileDemoStage>
           <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
-        <div className="page-shell flex min-h-12 items-center justify-center text-center">
+        <div className="page-shell hidden min-h-12 items-center justify-center text-center min-[701px]:flex">
           <Button data-booking-continue disabled size="sm" className="hidden! group-data-[ready=true]/booking:inline-flex! group-data-[review=true]/booking:hidden!">{t.ui.continue}</Button>
           <p data-booking-review tabIndex={-1} className="hidden rounded text-small font-semibold group-data-[review=true]/booking:block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--focus-ring)">{t.ui.reviewAnnouncement}</p>
         </div>

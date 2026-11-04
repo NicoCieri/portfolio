@@ -38,7 +38,7 @@ export function TicketingExperience() {
               <p className="hidden group-data-[validated=true]/ticketing:block motion-reduce:block">{t.statusValidated}</p>
               <p className="mt-1 text-meta font-normal">{t.sides}</p>
             </div>
-            <p className="max-w-[42ch] rounded-md bg-surface/90 px-3 py-1.5 text-[12px] leading-relaxed min-[701px]:text-meta">{t.disclaimerLine1}</p>
+            <p className="hidden max-w-[42ch] rounded-md bg-surface/90 px-3 py-1.5 text-[12px] leading-relaxed min-[701px]:block min-[701px]:text-meta">{t.disclaimerLine1}</p>
           </div>
           <div className="h-1 overflow-hidden rounded-full bg-foreground/15" aria-hidden="true"><div className="h-full origin-left scale-x-[var(--scene-scroll,0)] rounded-full bg-foreground motion-reduce:scale-x-100" /></div>
         </footer>
