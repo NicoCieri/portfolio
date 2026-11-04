@@ -12,7 +12,7 @@ export function useHeroDetails() {
     const root = layer.current;
     if (!root) return;
     const elements = Array.from(root.querySelectorAll<HTMLElement>("[data-falling-detail]"));
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 700px)");
     let visible = false;
 
     function place(element: HTMLElement, initial: boolean) {

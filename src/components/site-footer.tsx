@@ -8,7 +8,7 @@ import { useTranslations } from "@/hooks/use-translations";
 export function SiteFooter() {
   const t = useTranslations();
   return (
-    <footer id="site-footer" className="page-shell pt-10 pb-24 min-[701px]:pt-16">
+    <footer id="site-footer" className="page-shell hidden pt-10 pb-24 min-[701px]:block min-[701px]:pt-16">
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-7 text-meta text-secondary">
         <p className="inline-flex items-center gap-1.5">
           {t.footer.location}

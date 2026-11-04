@@ -1,5 +1,7 @@
 "use client";
 
+import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
@@ -12,7 +14,7 @@ export function TicketingExperience() {
   const t = useTranslations().ticketing;
   return (
     <ScrollScene>
-      <div data-scene-viewport data-mobile-demo-viewport className={`${mobileDemoViewportClass} ${viewportReflowClass} sticky top-0 isolate flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(620px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-between overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:bg-(image:--gradient-ticketing) before:mask-[linear-gradient(to_bottom,transparent,black_22%,black_78%,transparent)] motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
+      <div data-scene-viewport data-mobile-demo-viewport className={`${mobileDemoViewportClass} ${viewportReflowClass} sticky top-0 isolate flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(620px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-between overflow-hidden max-[700px]:before:hidden before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:bg-(image:--gradient-ticketing) before:mask-[linear-gradient(to_bottom,transparent,black_22%,black_78%,transparent)] motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
         <EventEntrance />
 
         <header className={`${mobileDemoHeaderClass} page-shell relative z-20 pt-8 min-[701px]:pt-10 [@media(max-height:720px)]:pt-5`}>
@@ -40,8 +42,9 @@ export function TicketingExperience() {
             </div>
             <p className="hidden max-w-[42ch] rounded-md bg-surface/90 px-3 py-1.5 text-[12px] leading-relaxed min-[701px]:block min-[701px]:text-meta">{t.disclaimerLine1}</p>
           </div>
-          <div className="h-1 overflow-hidden rounded-full bg-foreground/15" aria-hidden="true"><div className="h-full origin-left scale-x-[var(--scene-scroll,0)] rounded-full bg-foreground motion-reduce:scale-x-100" /></div>
+          <div className="hidden h-1 overflow-hidden min-[701px]:block rounded-full bg-foreground/15" aria-hidden="true"><div className="h-full origin-left scale-x-[var(--scene-scroll,0)] rounded-full bg-foreground motion-reduce:scale-x-100" /></div>
         </footer>
+        <MobileSceneProgress />
       </div>
       <p data-validation-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="px-5 py-4 text-small">{t.noscript}</p></noscript>

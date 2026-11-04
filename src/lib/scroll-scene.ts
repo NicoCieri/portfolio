@@ -1,5 +1,5 @@
-// Sticky viewports use svh, which stays stable as mobile browser chrome opens or
-// closes. Use that same reference for mobile progress instead of innerHeight.
+// Mobile progress uses the displayed sticky viewport, including dynamic browser
+// toolbar changes, rather than a potentially different layout innerHeight.
 // Desktop keeps its existing timing.
 export function sceneScreenHeight(viewport: HTMLElement) {
   return window.matchMedia("(max-width: 700px)").matches ? viewport.offsetHeight : window.innerHeight;

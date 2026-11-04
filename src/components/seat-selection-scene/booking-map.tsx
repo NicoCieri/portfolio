@@ -5,7 +5,7 @@ import { useTranslations } from "@/hooks/use-translations";
 
 function VenueOverview() {
   return (
-    <g className="opacity-[var(--booking-map-opacity,1)]">
+    <g className="opacity-[var(--booking-map-opacity,1)] group-data-[map-visible=false]/booking:hidden">
       <g className="origin-[258px_109px] [transform:translate(calc(var(--booking-map-zoom,0)*51px_+_var(--booking-map-dive,0)*122px),calc(var(--booking-map-zoom,0)*32px_+_var(--booking-map-dive,0)*121px))_scale(calc(1_+_var(--booking-map-zoom,0)*0.7_+_var(--booking-map-dive,0)*1.05))]">
         <ellipse cx="380" cy="230" rx="169" ry="99" fill="var(--device-screen)" />
         {Array.from({ length: 16 }, (_, index) => <path key={index} d={venueSectionPath(index)} fill={index < 5 ? "#a7aafa" : index < 10 ? "#c2b1eb" : "#ecc3d9"} stroke="var(--device-screen)" strokeWidth="3" />)}
@@ -31,7 +31,7 @@ function VenueOverview() {
 function LimitedSeatGrid() {
   const t = useTranslations().seatSelection.ui;
   return (
-    <g className="opacity-[var(--booking-first-grid,0)]" data-booking-limited-grid>
+    <g className="opacity-[var(--booking-first-grid,0)] group-data-[limited-visible=false]/booking:hidden" data-booking-limited-grid>
       <rect x="205" y="100" width="350" height="28" rx="14" fill="var(--device-pitch)" />
       <text x="380" y="119" textAnchor="middle" fontSize="13" fill="var(--device-text)">{t.towardsThePitch}</text>
       {Array.from({ length: 5 }, (_, row) => (
@@ -59,7 +59,7 @@ function SeatGrid() {
     "origin-[464px_218px] opacity-[var(--booking-selected-3,0)] [transform:scale(calc(0.88_+_var(--booking-selected-3,0)*0.12))]",
   ];
   return (
-    <g className="opacity-[var(--booking-grid,0)] [transform:translateY(calc(22px_-_var(--booking-grid,0)*22px))]">
+    <g className="group-data-[grid-visible=false]/booking:hidden opacity-[var(--booking-grid,0)] [transform:translateY(calc(22px_-_var(--booking-grid,0)*22px))]">
       <g className="origin-[380px_230px] [transform:translate(calc(var(--booking-seat-zoom,0)*156px_-_var(--booking-pan-x,0)*260px),calc(var(--booking-seat-zoom,0)*36px_-_var(--booking-pan-y,0)*40px))_scale(calc(1_+_var(--booking-seat-zoom,0)))]">
         <rect x="142" y="46" width="462" height="30" rx="15" fill="var(--device-pitch)" />
         <text x="373" y="66" textAnchor="middle" fontSize="13" fontWeight="500" fill="var(--device-text)">{t.towardsThePitch}</text>
@@ -90,7 +90,7 @@ function SeatGrid() {
 export function BookingMap({ touch = false }: { touch?: boolean }) {
   const t = useTranslations().seatSelection.ui;
   return (
-    <svg viewBox="0 0 760 460" preserveAspectRatio={touch ? "xMidYMid slice" : "xMidYMid meet"} className="block h-full w-full" fill="none" role="img" aria-label={t.mapLabel}>
+    <svg data-booking-map viewBox="0 0 760 460" preserveAspectRatio={touch ? "xMidYMid slice" : "xMidYMid meet"} className="block h-full w-full" fill="none" role="img" aria-label={t.mapLabel}>
       <rect width="760" height="460" fill="var(--device-canvas)" />
       <g aria-hidden="true" className="group-data-[review=true]/booking:hidden"><VenueOverview /><LimitedSeatGrid /><SeatGrid /></g>
       <g aria-hidden="true" className="group-data-[review=true]/booking:hidden">
@@ -105,11 +105,11 @@ export function BookingMap({ touch = false }: { touch?: boolean }) {
         <span aria-hidden="true" className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-(--device-accent) px-4 text-[17px] font-bold text-(--device-marker-text) shadow-lg [transform:scale(calc(1_-_var(--booking-continue-pressed,0)*0.07))]">{t.continue} →</span>
       </foreignObject>
       <foreignObject x="230" y="80" width="300" height="280" className="hidden group-data-[review=true]/booking:block">
-        <div className="motion-safe:animate-[booking-success-enter_550ms_cubic-bezier(0.16,1,0.3,1)_both] flex h-full flex-col justify-center rounded-2xl border border-(--device-border) bg-(--device-panel) p-6 text-center text-(--device-text)">
-          <span className="motion-safe:animate-[booking-success-pop_600ms_cubic-bezier(0.16,1,0.3,1)_100ms_both] mx-auto flex size-16 items-center justify-center rounded-full bg-(--device-selection) text-(--device-selection-text)">
-            <svg viewBox="0 0 24 24" className="size-9" fill="none" aria-hidden="true"><path pathLength="1" className="motion-safe:animate-[booking-success-check_350ms_ease-out_280ms_both]" d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        <div className="motion-safe:min-[701px]:animate-[booking-success-enter_550ms_cubic-bezier(0.16,1,0.3,1)_both] flex h-full flex-col justify-center rounded-2xl border border-(--device-border) bg-(--device-panel) p-6 text-center text-(--device-text)">
+          <span className="motion-safe:min-[701px]:animate-[booking-success-pop_600ms_cubic-bezier(0.16,1,0.3,1)_100ms_both] mx-auto flex size-16 items-center justify-center rounded-full bg-(--device-selection) text-(--device-selection-text)">
+            <svg viewBox="0 0 24 24" className="size-9" fill="none" aria-hidden="true"><path pathLength="1" className="motion-safe:min-[701px]:animate-[booking-success-check_350ms_ease-out_280ms_both]" d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </span>
-          <p className="motion-safe:animate-[booking-success-enter_450ms_ease-out_220ms_both] mt-5 rounded text-[24px] leading-tight font-bold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--device-text)">{t.reviewTitle}</p>
+          <p className="motion-safe:min-[701px]:animate-[booking-success-enter_450ms_ease-out_220ms_both] mt-5 rounded text-[24px] leading-tight font-bold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--device-text)">{t.reviewTitle}</p>
           <p className="mt-5 text-[12px] text-(--device-muted)">{t.noRealBooking}</p>
         </div>
       </foreignObject>

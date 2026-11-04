@@ -19,7 +19,7 @@ export function useAmbientSpotlight() {
     if (hero) heroVisibility?.observe(hero);
 
     const motion = window.matchMedia(
-      "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 701px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     );
     let frame: number | null = null;
     let lastTime: number | null = null;

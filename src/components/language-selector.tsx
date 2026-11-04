@@ -10,12 +10,12 @@ const labelClass =
   "inline-flex h-full min-h-9 min-w-9 items-center justify-center px-3 text-meta font-semibold uppercase tracking-[0.04em]";
 
 const thumbMotion =
-  "duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+  "duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] max-[700px]:transition-none motion-reduce:transition-none";
 
 const shellClass = [
-  "relative isolate inline-grid grid-cols-2 rounded-full border border-border bg-surface/50 p-0.5",
+  "relative isolate inline-grid grid-cols-2 rounded-full border border-border bg-surface min-[701px]:bg-surface/50 p-0.5",
   "transition-colors duration-(--motion-fast)",
-  "hover:bg-surface active:bg-foreground/10",
+  "hover:bg-surface active:bg-surface min-[701px]:active:bg-foreground/10",
   "forced-colors:hover:bg-Highlight forced-colors:active:bg-Highlight",
 ].join(" ");
 

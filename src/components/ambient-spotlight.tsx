@@ -9,7 +9,7 @@ export function AmbientSpotlight() {
     <div
       ref={overlay}
       className="
-        pointer-events-none fixed inset-0 z-0 forced-colors:hidden
+        max-[700px]:hidden pointer-events-none fixed inset-0 z-0 forced-colors:hidden
         [--ambient-position:var(--ambient-x,70vw)_var(--ambient-y,30vh)]
         bg-[radial-gradient(ellipse_760px_640px_at_var(--ambient-position),var(--ambient-glow-blue)_0%,var(--ambient-glow-pink)_38%,transparent_78%)]
         [@media(min-width:541px)_and_(hover:none)]:[--ambient-position:70vw_30vh]

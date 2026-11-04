@@ -10,9 +10,17 @@ const seatingRows = Array.from({ length: 5 }, (_, row) => ({
 /** A quiet view from the stands, behind the booking devices. */
 export function VenueBackground() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)]">
+    <div aria-hidden="true" className="max-[700px]:hidden pointer-events-none absolute inset-0 -z-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)]">
       <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" className="h-full w-full opacity-[0.09] saturate-50 min-[701px]:opacity-[0.14]" fill="none">
         <defs>
+          <g id="booking-venue-seat">
+            <ellipse cy="44" rx="23" ry="5" fill="var(--text)" opacity=".08" />
+            <path d="M-13 28v14m26-14v14" stroke="var(--text)" strokeWidth="4" strokeOpacity=".45" />
+            <rect x="-19" y="-19" width="38" height="38" rx="9" fill="currentColor" />
+            <path d="M-12-11h24" stroke="var(--pop-paper)" strokeOpacity=".3" strokeWidth="2" strokeLinecap="round" />
+            <rect x="-21" y="18" width="42" height="12" rx="5" fill="var(--accent-violet)" />
+            <path d="M-25 9v13m50-13v13" stroke="var(--text)" strokeWidth="4" strokeOpacity=".45" strokeLinecap="round" />
+          </g>
           <linearGradient id="booking-venue-light" x1="0" y1="0" x2="0" y2="1">
             <stop stopColor="var(--pop-sky)" stopOpacity=".35" />
             <stop offset="1" stopColor="var(--pop-sky)" stopOpacity="0" />
@@ -37,14 +45,7 @@ export function VenueBackground() {
           <g key={row}>
             <path d={`M-30 ${320 + row * 76}Q720 ${458 + row * 76} 1470 ${320 + row * 76}`} stroke="var(--text)" strokeOpacity=".18" strokeWidth="2" />
             {seats.filter(({ aisle }) => !aisle).map(({ x, y }, seat) => (
-              <g key={x} transform={`translate(${x} ${y}) scale(${scale})`}>
-                <ellipse cy="44" rx="23" ry="5" fill="var(--text)" opacity=".08" />
-                <path d="M-13 28v14m26-14v14" stroke="var(--text)" strokeWidth="4" strokeOpacity=".45" />
-                <rect x="-19" y="-19" width="38" height="38" rx="9" fill={(seat + row) % 6 === 0 ? "var(--pop-pink)" : "var(--pop-blue)"} />
-                <path d="M-12-11h24" stroke="var(--pop-paper)" strokeOpacity=".3" strokeWidth="2" strokeLinecap="round" />
-                <rect x="-21" y="18" width="42" height="12" rx="5" fill="var(--accent-violet)" />
-                <path d="M-25 9v13m50-13v13" stroke="var(--text)" strokeWidth="4" strokeOpacity=".45" strokeLinecap="round" />
-              </g>
+              <use key={x} href="#booking-venue-seat" transform={`translate(${x} ${y}) scale(${scale})`} color={(seat + row) % 6 === 0 ? "var(--pop-pink)" : "var(--pop-blue)"} />
             ))}
           </g>
         ))}

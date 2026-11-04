@@ -1,5 +1,7 @@
 "use client";
 
+import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+
 import { Button } from "@/components/button";
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
@@ -32,7 +34,7 @@ export function SeatSelectionExperience() {
           </div>
         </header>
         <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1100px,calc((100svh-480px)*1.65))]`}>
-          <MobileDemoStage><BookingDevices /></MobileDemoStage>
+          <MobileDemoStage fillSpace><BookingDevices /></MobileDemoStage>
           <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
         <div className="page-shell hidden min-h-12 items-center justify-center text-center min-[701px]:flex">
@@ -47,6 +49,7 @@ export function SeatSelectionExperience() {
             </li>
           ))}
         </ol>
+        <MobileSceneProgress />
       </div>
       <p data-booking-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="page-shell py-5 text-small">{t.noscript}</p></noscript>

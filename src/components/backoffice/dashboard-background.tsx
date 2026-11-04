@@ -1,7 +1,7 @@
 /** Layered operational panels on a perspective workspace. */
 export function DashboardBackground() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)] forced-colors:hidden">
+    <div aria-hidden="true" className="max-[700px]:hidden pointer-events-none absolute inset-0 -z-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)] forced-colors:hidden">
       <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" className="h-full w-full opacity-[0.09] saturate-50 min-[701px]:opacity-[0.14]" fill="none">
         <defs>
           <linearGradient id="operations-floor" x1="720" y1="300" x2="720" y2="750" gradientUnits="userSpaceOnUse">

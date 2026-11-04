@@ -8,7 +8,7 @@ import { SkipToContent } from "@/components/skip-to-content";
 
 export function PortfolioShell({ children }: { children: ReactNode }) {
   return (
-    <div className="relative isolate min-h-svh overflow-x-clip [--header-height:141px] min-[701px]:[--header-height:149px] min-[801px]:[--header-height:93px] bg-(image:--gradient-page) font-sans text-foreground">
+    <div className="relative isolate min-h-svh overflow-x-clip [--header-height:141px] min-[701px]:[--header-height:149px] min-[801px]:[--header-height:93px] bg-background min-[701px]:bg-(image:--gradient-page) font-sans text-foreground">
       <AmbientSpotlight />
       <SkipToContent />
       <ContactShortcut />

@@ -20,7 +20,7 @@ export function Hero() {
       <HeroBackground />
       <div data-hero-content className="page-shell relative flex min-h-[calc(100dvh-var(--header-height))] flex-col">
       <div className="pt-8 min-[701px]:pt-[clamp(40px,7svh,80px)]">
-        <p className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-foreground/15 bg-surface/65 px-4 py-2 text-meta font-medium min-[701px]:mb-8">
+        <p className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-border min-[701px]:border-foreground/15 bg-surface min-[701px]:bg-surface/65 px-4 py-2 text-meta font-medium min-[701px]:mb-8">
           <span className="size-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />{t.hero.badge}
         </p>
         <div className="grid gap-4 min-[701px]:gap-8 min-[901px]:grid-cols-[1.35fr_1fr] min-[901px]:items-center min-[901px]:gap-10">
@@ -32,13 +32,13 @@ export function Hero() {
           <div className="pb-1">
             <div
               ref={portraitStageRef}
-              className="relative mx-auto mb-5 size-32 [perspective:700px] min-[701px]:size-44 min-[901px]:size-52"
+              className="relative mx-auto mb-5 size-32 min-[701px]:[perspective:700px] min-[701px]:size-44 min-[901px]:size-52"
             >
               <div
                 ref={portraitDiscRef}
-                className="relative size-full overflow-hidden rounded-full border-2 border-(--hero-portrait-border) [transform-style:preserve-3d] will-change-transform"
+                className="relative size-full overflow-hidden rounded-full border-2 border-(--hero-portrait-border) min-[701px]:[transform-style:preserve-3d] min-[701px]:will-change-transform"
               >
-                <div aria-hidden="true" className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-lime),var(--accent)_75%)] opacity-25" />
+                <div aria-hidden="true" className="max-[700px]:hidden absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-lime),var(--accent)_75%)] opacity-25" />
                 <Image
                   src="/images/nicolas-hero.webp"
                   alt={t.hero.imageAlt}
@@ -91,7 +91,7 @@ export function Hero() {
           className="max-w-full shrink-0 text-center"
         >
           {t.hero.exploreCta}
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cta-arrow-bob size-5 shrink-0 animate-[cta-arrow-bob_1.1s_ease-in-out_infinite] group-hover/action:animate-[cta-arrow-bob_0.7s_ease-in-out_infinite]">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="max-[700px]:animate-none! cta-arrow-bob size-5 shrink-0 animate-[cta-arrow-bob_1.1s_ease-in-out_infinite] group-hover/action:animate-[cta-arrow-bob_0.7s_ease-in-out_infinite]">
             <path d="M12 4v16m-6-6 6 6 6-6" />
           </svg>
         </Button>

@@ -145,7 +145,7 @@ export function useLogoJump(
   useEffect(() => {
     if (done) return;
 
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 700px)");
     reducedMotionRef.current = motion.matches;
     const syncMotion = () => {
       reducedMotionRef.current = motion.matches;

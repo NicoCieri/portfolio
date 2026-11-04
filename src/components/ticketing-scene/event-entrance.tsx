@@ -15,7 +15,7 @@ const guests = [
 /** Decorative venue context; the ticket and scanner remain the foreground. */
 export function EventEntrance() {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)]" aria-hidden="true">
+    <div className="max-[700px]:hidden pointer-events-none absolute inset-0 overflow-hidden mask-[linear-gradient(to_bottom,transparent_22%,black_42%,black_62%,transparent_86%)]" aria-hidden="true">
       <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" className="h-full w-full opacity-[0.09] saturate-50 min-[701px]:opacity-[0.14]" fill="none">
         <defs>
           <linearGradient id="ticketing-door-glow" x1="720" y1="200" x2="720" y2="650" gradientUnits="userSpaceOnUse">

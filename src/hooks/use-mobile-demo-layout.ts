@@ -35,8 +35,10 @@ export function useMobileDemoLayout() {
       const spacing = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + (parseFloat(style.rowGap) || 0) * Math.max(0, flow.length - 1);
       // Compact/reduced-motion fallbacks are in normal flow and need only width fitting.
       const available = style.position === "sticky" ? Math.max(0, viewport.clientHeight - occupied - spacing - 4) : Infinity;
-      const scale = Math.max(0.05, Math.min(0.85, element.clientWidth / ART_WIDTH, available / naturalHeight));
-      const values = { "--demo-scale": scale.toFixed(4), "--demo-stage-height": `${Math.ceil(naturalHeight * scale)}px` };
+      const fillSpace = element.hasAttribute("data-mobile-demo-fill");
+      const scale = Math.max(0.05, Math.min(fillSpace ? 1.15 : 0.85, element.clientWidth / ART_WIDTH, available / naturalHeight));
+      const stageHeight = fillSpace && Number.isFinite(available) ? available : naturalHeight * scale;
+      const values = { "--demo-scale": scale.toFixed(4), "--demo-stage-height": `${Math.floor(stageHeight)}px` };
       for (const [name, value] of Object.entries(values)) {
         if (element.style.getPropertyValue(name) !== value) element.style.setProperty(name, value);
       }

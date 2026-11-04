@@ -17,7 +17,14 @@ export function ContactSection() {
             <h2 id="contact-heading" tabIndex={-1} className="mt-4 max-w-[17ch] rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--focus-ring) text-[clamp(32px,4.5vw,58px)] leading-[1.08] font-bold tracking-[-0.045em]">{t.contact.heading}</h2>
             <p className="mt-6 max-w-[52ch] text-body leading-relaxed text-secondary">{t.contact.body}</p>
             <ul className="mt-8 space-y-4 text-small text-secondary">
-              {t.contact.points.map((point) => <li key={point} className="flex gap-3"><span className="text-accent" aria-hidden="true">↗</span>{point}</li>)}
+              {t.contact.points.map((point) => (
+                <li key={point} className="flex gap-3">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 size-4 shrink-0 text-accent">
+                    <path d="M6 18 18 6M6 6h12v12" />
+                  </svg>
+                  {point}
+                </li>
+              ))}
             </ul>
             <div className="mt-6 border-t border-border pt-5">
               <div className="flex flex-wrap gap-3">

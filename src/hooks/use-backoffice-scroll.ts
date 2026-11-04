@@ -17,6 +17,9 @@ export function useBackofficeScroll() {
 
   return useScrollScene("[data-backoffice-viewport]", useCallback(({ root, viewport }) => {
     const announcement = root.querySelector<HTMLElement>("[data-backoffice-announcement]");
+    const mobileScreen = root.querySelector<HTMLElement>("[data-bo-mobile-screen]");
+    const mobileOrder = root.querySelector<HTMLElement>("[data-bo-mobile-order]");
+    const mobileSave = root.querySelector<HTMLElement>("[data-bo-mobile-save]");
     let lastPhase = "";
 
     function update(reducedMotion: boolean) {
@@ -34,6 +37,19 @@ export function useBackofficeScroll() {
       const start = stops[next - 1];
       const end = stops[next];
       const travel = ease((p - start[0]) / (end[0] - start[0]));
+      if (mobileScreen?.offsetWidth && mobileOrder && mobileSave) {
+        const savePanel = mobileSave.offsetParent as HTMLElement;
+        const orderX = mobileOrder.offsetLeft + mobileOrder.offsetWidth * 0.65;
+        const orderY = mobileOrder.offsetTop + mobileOrder.offsetHeight / 2;
+        const saveX = mobileSave.offsetLeft + mobileSave.offsetWidth * 0.7;
+        const saveY = savePanel.offsetTop + mobileSave.offsetTop + mobileSave.offsetHeight / 2;
+        const arrival = ease(p / 0.17);
+        const toSave = ease((p - 0.26) / 0.14);
+        const x = p < 0.26 ? 260 + (orderX - 260) * arrival : orderX + (saveX - orderX) * toSave;
+        const y = p < 0.26 ? 310 + (orderY - 310) * arrival : orderY + (saveY - orderY) * toSave;
+        mobileScreen.style.setProperty("--bo-touch-x", `${x.toFixed(2)}px`);
+        mobileScreen.style.setProperty("--bo-touch-y", `${y.toFixed(2)}px`);
+      }
       const properties = {
         "--bo-progress": scrollProgress,
         "--bo-selected": ease((p - 0.17) / 0.05),

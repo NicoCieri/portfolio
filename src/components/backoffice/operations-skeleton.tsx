@@ -5,7 +5,7 @@ export function OperationsSkeleton() {
       <rect width="1000" height="52" fill="var(--device-panel)" />
       <rect x="651" y="52" width="349" height="418" fill="var(--device-canvas)" />
       <path d="M0 52H1000M0 147H1000M651 52V470" stroke="var(--device-border)" />
-      <g fill="var(--device-border)" className="motion-safe:animate-pulse">
+      <g fill="var(--device-border)" className="motion-safe:min-[701px]:animate-pulse">
         <rect x="22" y="13" width="28" height="28" rx="9" />
         <rect x="62" y="19" width="130" height="14" rx="5" /><rect x="838" y="22" width="122" height="10" rx="4" />
         {[26, 245, 465].map((x) => <g key={x}>

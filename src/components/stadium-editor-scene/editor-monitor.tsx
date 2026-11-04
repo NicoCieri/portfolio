@@ -7,7 +7,7 @@ import { useTranslations } from "@/hooks/use-translations";
 export function EditorMonitor() {
   const t = useTranslations().stadiumEditor.ui;
   return (
-    <DeviceMonitor screenClassName="max-[700px]:aspect-auto" className="mx-auto w-full max-w-[1100px] [@media(max-height:820px)]:[&>div[aria-hidden]]:hidden" aria-hidden="true">
+    <DeviceMonitor screenClassName="max-[700px]:aspect-[1/1]" className="mx-auto w-full max-w-[1100px] [@media(max-height:820px)]:[&>div[aria-hidden]]:hidden" aria-hidden="true">
       <div className="flex h-11 [@media(max-height:820px)]:h-8 shrink-0 items-center justify-between gap-3 border-b border-(--device-border) bg-(--device-panel) px-3 min-[701px]:px-5">
         <div className="flex items-center gap-3"><span className="flex size-6 items-center justify-center rounded-md bg-(--pop-blue) text-[13px] font-bold text-white">a.</span><span className="text-[13px] font-semibold">Orbit Park <span className="ml-2 hidden font-normal text-(--device-muted) min-[701px]:inline">/ {t.mapEditor}</span></span></div>
         <span className="rounded-full bg-(--device-accent)/8 px-2.5 py-1 font-mono text-[11px] text-(--device-accent)">SVG</span>

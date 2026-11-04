@@ -1,5 +1,7 @@
 "use client";
 
+import { MobileSceneProgress } from "@/components/mobile-scene-progress";
+
 import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
@@ -31,7 +33,7 @@ export function StadiumEditorExperience() {
           </div>
         </header>
         <figure className={`${mobileDemoFigureClass} page-shell max-[700px]:max-w-[320px] max-[700px]:[@media(max-height:820px)]:max-w-[280px] min-[701px]:max-[900px]:max-w-[min(560px,calc((100svh-480px)*1.05))] min-[901px]:max-w-[min(1000px,calc((100svh-488px)*1.55))] min-[701px]:[@media(max-height:820px)]:max-w-[min(760px,calc((100svh-340px)*1.55))]`}>
-          <MobileDemoStage><EditorMonitor /></MobileDemoStage>
+          <MobileDemoStage fillSpace><EditorMonitor /></MobileDemoStage>
           <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
         <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>
@@ -42,6 +44,7 @@ export function StadiumEditorExperience() {
             </li>
           ))}
         </ol>
+        <MobileSceneProgress />
       </div>
       <p data-editor-announcement role="status" aria-live="polite" aria-atomic="true" className="sr-only">{t.announcement}</p>
       <noscript><p className="page-shell py-5 text-small">{t.noscript}</p></noscript>

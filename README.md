@@ -65,7 +65,9 @@ References: [hosted reCAPTCHA](https://help.formspree.io/articles/form-and-proje
 
 ## Scene architecture
 
-Each demo hook defines its phases, coordinates, CSS variables, and localized announcements. `useScrollScene` owns their shared browser lifecycle: passive scroll events, one pending animation frame, visibility/resize observers, reduced-motion changes, and cleanup. Setup callbacks are memoized; translated scenes reinitialize at the current scroll position when the language changes.
+Each demo hook defines its phases, coordinates, CSS variables, and localized announcements. `useScrollScene` owns their shared browser lifecycle: passive scroll events, one pending animation frame, visibility/resize observers, reduced-motion changes, and cleanup. Scenes activate within 200px of the viewport so their state is ready before entry. Distant scenes detach scroll/resize listeners and pause descendant CSS animations; hiding the browser tab pauses every scene. The DOM and section heights stay mounted to preserve navigation, reverse scrolling and keyboard focus. Live announcements remain limited to visible scenes. Progress variables are scoped to the small progress indicator, not the full scene subtree.
+
+The seat demo scopes animation variables to its maps, skips unchanged style/state writes, and removes fully transparent map layers from rendering while retaining both sides of a crossfade. The decorative venue seats reuse one SVG definition instead of repeating their markup. Setup callbacks are memoized; translated scenes reinitialize at the current scroll position when the language changes.
 
 ## SEO and languages
 
@@ -76,6 +78,10 @@ Production origin: `https://nicocieri.dev`. English is prerendered at `/` and Sp
 Brand assets live in `public/`: favicon, Apple touch icon, and `images/social-card.png` (1200×630). SVG sources are preserved. Regenerate them with `node scripts/generate-brand-assets.mjs`, which reuses Next.js's Sharp dependency.
 
 After deployment, verify the domain in Google Search Console, submit `/sitemap.xml`, and check the indexed pages. DNS, domain verification and hosting redirects are deployment settings and are not applied by this repository.
+
+## Mobile rendering
+
+At widths up to 700px, the portfolio uses a solid page background and opaque controls. Decorative scene backgrounds, atmosphere gradients, ambient lighting and falling hero details are hidden. Device shadows, skeleton pulses and celebration animations are desktop-only. Theme changes are immediate; the clock has a static separator and refreshes once per minute. The progress ring fills without rotating, shrinking or fading. Scroll-driven demo actions and loading indicators remain available.
 
 ## Accessibility
 

@@ -28,10 +28,10 @@ function BookingPhone() {
 export function BookingDevices() {
   return (
     <div className="relative pb-3 min-[701px]:pb-4">
-      <DeviceMonitor className="w-[84%]" screenClassName="max-[700px]:aspect-auto">
+      <DeviceMonitor className="hidden w-[84%] min-[701px]:block" screenClassName="max-[700px]:aspect-auto">
         <BookingInterface />
       </DeviceMonitor>
-      <div className="absolute right-0 bottom-0 z-10 w-[36%] min-[701px]:w-[max(160px,24%)]"><BookingPhone /></div>
+      <div className="relative z-10 mx-auto w-[224px] min-[701px]:absolute min-[701px]:right-0 min-[701px]:bottom-0 min-[701px]:w-[max(160px,24%)]"><BookingPhone /></div>
     </div>
   );
 }

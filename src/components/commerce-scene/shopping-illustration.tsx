@@ -149,11 +149,11 @@ function ShoppingScreen({ touch = false }: { touch?: boolean }) {
 
 export function ShoppingIllustration() {
   return (
-    <div aria-hidden="true" className="relative mx-auto aspect-[1.6] w-full max-w-[1080px] min-[701px]:aspect-[1.85]">
-      <div className="absolute top-0 left-0 w-[78%] [transform:translateY(calc((1-var(--commerce-entrance))*16px))] min-[701px]:w-[84%]">
+    <div aria-hidden="true" className="relative mx-auto w-full max-w-[1080px] max-[700px]:py-6 min-[701px]:aspect-[1.85]">
+      <div className="hidden min-[701px]:block absolute top-0 left-0 w-[78%] [transform:translateY(calc((1-var(--commerce-entrance))*16px))] min-[701px]:w-[84%]">
         <DeviceMonitor aspectRatio="820 / 460"><ShoppingScreen /></DeviceMonitor>
       </div>
-      <div className="absolute right-0 bottom-0 w-[27%] [transform:translateY(calc((1-var(--commerce-entrance))*-16px))_rotate(calc((1-var(--commerce-entrance))*4deg))] min-[701px]:w-[24%]">
+      <div className="relative mx-auto w-[224px] min-[701px]:absolute min-[701px]:right-0 min-[701px]:bottom-0 [transform:translateY(calc((1-var(--commerce-entrance))*-16px))_rotate(calc((1-var(--commerce-entrance))*4deg))] min-[701px]:w-[24%]">
         <DevicePhone aspectRatio="240 / 520"><ShoppingScreen touch /></DevicePhone>
       </div>
     </div>

@@ -38,26 +38,41 @@ function events() {
 }
 
 test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, and cleans up on remount", () => {
-  let effect, intersection, resize, nextFrame = 0, setups = 0, cleanups = 0;
+  let effect, intersection, activity, resize, nextFrame = 0, setups = 0, cleanups = 0;
   const frames = new Map();
   const calls = [];
   const browser = events();
+  const page = { ...events(), hidden: false };
   const motion = { ...events(), matches: false };
   const compact = { ...events(), matches: false };
   browser.matchMedia = query => query.includes("reduced-motion") ? motion : compact;
-  const viewport = {};
+  const viewport = { offsetHeight: 700 };
+  const progressLabel = { textContent: "0" };
   const liveRegion = { live: "polite", setAttribute(_, value) { this.live = value; } };
-  const root = { querySelector: () => viewport, querySelectorAll: () => [liveRegion] };
+  let sectionTop = 0;
+  const properties = new Map();
+  const progressIndicator = { style: { getPropertyValue: key => properties.get(key) ?? "", setProperty: (key, value) => properties.set(key, value) } };
+  const root = {
+    dataset: {},
+    querySelector: selector => selector === "[data-scene-progress-label]" ? progressLabel : selector === "[data-mobile-scene-progress]" ? progressIndicator : viewport, querySelectorAll: () => [liveRegion],
+    offsetHeight: 3500, getBoundingClientRect: () => ({ top: sectionTop }),
+    style: { setProperty: () => assert.fail("Progress must not invalidate styles throughout the scene") },
+  };
   const observers = [];
   const load = sourceLoader({ react: {
     useRef: () => ({ current: root }),
     useEffect: fn => { effect = fn; },
   } }, {
     window: browser,
+    document: page,
     requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
     cancelAnimationFrame: id => frames.delete(id),
     IntersectionObserver: class {
-      constructor(callback) { intersection = callback; observers.push(this); }
+      constructor(callback, options) {
+        if (options?.rootMargin) { activity = callback; assert.equal(options.rootMargin, "200px 0px"); }
+        else intersection = callback;
+        observers.push(this);
+      }
       observe() {}
       disconnect() { this.disconnected = true; }
     },
@@ -75,16 +90,48 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
     const cleanup = effect();
     assert.equal(calls.at(-1), false);
     assert.equal(liveRegion.live, "off");
+    assert.equal(root.dataset.sceneActive, "false");
+    assert.equal(browser.handlers.has("scroll"), false);
+    browser.emit("scroll"); resize(); assert.equal(frames.size, 0);
+    activity([{ isIntersecting: true }]);
+    intersection([{ isIntersecting: true }]);
+    assert.equal(root.dataset.sceneActive, "true");
+    sectionTop = -1400;
     browser.emit("scroll"); browser.emit("scroll"); resize();
     assert.equal(frames.size, 1);
     const pending = [...frames.values()][0]; frames.clear(); pending();
     assert.equal(calls.at(-1), false);
+    assert.equal(properties.get("--scene-travel"), "0.5");
+    assert.equal(progressLabel.textContent, "53");
+    sectionTop = -3000;
     intersection([{ isIntersecting: false }]);
+    activity([{ isIntersecting: false }]);
+    assert.equal(root.dataset.sceneActive, "false");
+    assert.equal(browser.handlers.has("scroll"), false);
+    assert.equal(properties.get("--scene-travel"), "1");
+    assert.equal(progressLabel.textContent, "100");
     assert.equal(liveRegion.live, "off");
     browser.emit("scroll"); resize();
     assert.equal(frames.size, 0);
+    sectionTop = 100;
+    activity([{ isIntersecting: true }]);
     intersection([{ isIntersecting: true }]);
+    assert.equal(properties.get("--scene-travel"), "0");
+    assert.equal(progressLabel.textContent, "0");
     assert.equal(liveRegion.live, "polite");
+    browser.emit("scroll"); assert.equal(frames.size, 1);
+    const beforeHiding = calls.length;
+    page.hidden = true; page.emit("visibilitychange");
+    assert.equal(frames.size, 0);
+    assert.equal(root.dataset.sceneActive, "false");
+    assert.equal(browser.handlers.has("scroll"), false);
+    assert.equal(liveRegion.live, "off");
+    browser.emit("scroll"); resize();
+    assert.equal(calls.length, beforeHiding);
+    page.hidden = false; page.emit("visibilitychange");
+    assert.equal(root.dataset.sceneActive, "true");
+    assert.equal(liveRegion.live, "polite");
+    assert.equal(calls.length, beforeHiding + 1);
     motion.matches = true; motion.emit("change");
     assert.equal(calls.at(-1), true);
     assert.equal(browser.handlers.has("scroll"), false);
@@ -98,6 +145,8 @@ test("shared scene lifecycle batches frames, pauses offscreen/reduced motion, an
     cleanup();
     assert.equal(frames.size, 0);
     assert.equal(browser.handlers.size, 0);
+    assert.equal(page.handlers.size, 0);
+    assert.equal(root.dataset.sceneActive, undefined);
     assert.equal(motion.handlers.size, 0);
     assert.equal(compact.handlers.size, 0);
     assert.equal(liveRegion.live, "polite");
@@ -110,14 +159,16 @@ function sceneHarness(name, hook, locale, mobile = false) {
   let setup, top = 1000, focused = false;
   class ContinueTarget { closest() { return true; } }
   const variables = new Map();
+  let styleWrites = 0, stateWrites = 0;
+  const map = { style: { setProperty: (name, value) => { styleWrites++; variables.set(name, value); } } };
   const announcement = { textContent: "" };
   const buttons = [{ disabled: true }];
   const root = {
-    ...events(), dataset: {}, offsetHeight: 10000,
+    ...events(), dataset: new Proxy({}, { set(target, key, value) { stateWrites++; target[key] = value; return true; } }), offsetHeight: 10000,
     style: { setProperty: (name, value) => variables.set(name, value) },
     getBoundingClientRect: () => ({ top }),
     querySelector: selector => selector.includes("announcement") ? announcement : selector === "[data-booking-review]" ? { focus: () => { focused = true; } } : null,
-    querySelectorAll: selector => selector === "[data-booking-continue]" ? buttons : [],
+    querySelectorAll: selector => selector === "[data-booking-continue]" ? buttons : selector === "[data-booking-map]" ? [map] : [],
     removeAttribute(name) { if (name === "data-stage") delete this.dataset.stage; },
   };
   let dictionary;
@@ -130,7 +181,7 @@ function sceneHarness(name, hook, locale, mobile = false) {
   load(`@/hooks/use-${name}-scroll`)[hook]();
   const viewport = { offsetHeight: mobile ? 650 : 800 };
   const controller = setup({ root, viewport });
-  return { root, variables, announcement, dictionary, buttons, controller, setTop: value => { top = value; }, continueWithKeyboard: () => root.emit("click", { target: new ContinueTarget() }), isReviewFocused: () => focused };
+  return { writes: () => ({ styleWrites, stateWrites }), root, variables, announcement, dictionary, buttons, controller, setTop: value => { top = value; }, continueWithKeyboard: () => root.emit("click", { target: new ContinueTarget() }), isReviewFocused: () => focused };
 }
 
 const scenes = [
@@ -163,6 +214,29 @@ for (const [name, hook, initial, final] of scenes) {
     });
   }
 }
+
+test("seat selection avoids unchanged DOM writes and culls layers only after their fade", () => {
+  const h = sceneHarness("seat-selection", "useSeatSelectionScroll", "en", true);
+  h.controller.update(false);
+  const initial = h.writes();
+  h.controller.update(false);
+  assert.deepEqual(h.writes(), initial);
+  let crossfade = false;
+  for (let top = 1000; top >= -10000; top -= 20) {
+    h.setTop(top); h.controller.update(false);
+    const overview = Number(h.variables.get("--booking-map-opacity"));
+    const limited = Number(h.variables.get("--booking-first-grid"));
+    const grid = Number(h.variables.get("--booking-grid"));
+    assert.equal(h.root.dataset.mapVisible, String(overview > 0));
+    assert.equal(h.root.dataset.limitedVisible, String(limited > 0));
+    assert.equal(h.root.dataset.gridVisible, String(grid > 0));
+    if (overview > 0 && overview < 1 && (limited > 0 || grid > 0)) crossfade = true;
+  }
+  assert.ok(crossfade, "keep outgoing and incoming layers throughout a crossfade");
+  h.setTop(1000); h.controller.update(false);
+  assert.equal(h.root.dataset.mapVisible, "true");
+  assert.equal(h.root.dataset.gridVisible, "false");
+});
 
 for (const locale of ["en", "es"]) {
   test(`seat selection: every step has an announcement in ${locale}, including reverse scroll`, () => {
@@ -319,7 +393,9 @@ test("mobile illustrations resize around text and controls, then release desktop
   const header = { offsetHeight: 174 };
   const art = { offsetHeight: 372 };
   const viewport = { clientHeight: 735, children: [] };
+  let fillSpace = false;
   const stage = {
+    hasAttribute: () => fillSpace,
     clientWidth: 353,
     get offsetHeight() { return parseFloat(values.get("--demo-stage-height")) || 240; },
     style: {
@@ -359,6 +435,22 @@ test("mobile illustrations resize around text and controls, then release desktop
   assert.ok(parseFloat(values.get("--demo-scale")) < initial);
   assertFits();
   viewport.clientHeight = 667; browser.emit("resize"); flush(); assertFits();
+  fillSpace = true;
+  header.offsetHeight = 174;
+  let previousScale = 0, previousHeight = 0;
+  // Same width/content: retracting browser controls must never shrink the demo.
+  for (const height of [667, 735, 852, 900]) {
+    viewport.clientHeight = height;
+    onResize(); flush(); assertFits();
+    const scale = parseFloat(values.get("--demo-scale"));
+    const stageHeight = parseFloat(values.get("--demo-stage-height"));
+    assert.ok(scale >= previousScale);
+    assert.ok(stageHeight > previousHeight);
+    previousScale = scale; previousHeight = stageHeight;
+  }
+  assert.ok(parseFloat(values.get("--demo-scale")) > 0.85);
+  assert.ok(parseFloat(values.get("--demo-stage-height")) > art.offsetHeight * parseFloat(values.get("--demo-scale")));
+  fillSpace = false;
   position = "static"; onResize(); flush();
   assert.equal(values.get("--demo-scale"), "0.8500");
   mobile.matches = false; mobile.emit("change"); flush();
@@ -368,4 +460,43 @@ test("mobile illustrations resize around text and controls, then release desktop
   assert.equal(browser.handlers.size, 0);
   assert.equal(mobile.handlers.size, 0);
   assert.equal(stopped, true);
+});
+
+for (const locale of ["en", "es"]) {
+  test(`airport: check-in preserves phase order, reverses and settles without motion (${locale})`, () => {
+    const h = sceneHarness("airport", "useAirportScroll", locale);
+    const seen = new Set();
+    for (let top = 1000; top >= -10000; top -= 20) {
+      h.setTop(top); h.controller.update(false);
+      seen.add(h.root.dataset.phase);
+      assert.equal(h.announcement.textContent, h.root.dataset.phase === "0" ? h.dictionary.airport.searchAnnouncements[h.root.dataset.searchState] : h.dictionary.airport.phases[Number(h.root.dataset.phase)]);
+      for (const value of h.variables.values()) assert.ok(!/NaN|Infinity/.test(value));
+    }
+    assert.deepEqual([...seen], ["0", "1", "2", "3"]);
+    h.setTop(1000); h.controller.update(false);
+    assert.equal(h.root.dataset.phase, "0");
+    assert.equal(h.variables.get("--airport-seat"), "0");
+    assert.equal(h.variables.get("--airport-bag"), "0");
+    h.controller.update(true);
+    assert.equal(h.root.dataset.phase, "3");
+    assert.equal(h.variables.get("--airport-ticket"), "1");
+    assert.equal(h.announcement.textContent, h.dictionary.airport.phases[3]);
+  });
+}
+
+test("airport search types a PNR before loading, reveals results and reverses cleanly", () => {
+  const h = sceneHarness("airport", "useAirportScroll", "es");
+  const states = [];
+  for (let top = 0; top > -3000; top -= 20) {
+    h.setTop(top); h.controller.update(false);
+    if (states.at(-1) !== h.root.dataset.searchState) states.push(h.root.dataset.searchState);
+    assert.equal(h.root.dataset.reservationReady, String(h.root.dataset.searchState === "ready"));
+  }
+  assert.deepEqual(states, ["idle", "typing", "loading", "ready"]);
+  h.setTop(0); h.controller.update(false);
+  assert.equal(h.root.dataset.searchState, "idle");
+  assert.equal(h.root.dataset.reservationReady, "false");
+  h.controller.update(true);
+  assert.equal(h.root.dataset.searchState, "ready");
+  assert.equal(h.variables.get("--airport-pointer-opacity"), "0");
 });

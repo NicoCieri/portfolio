@@ -8,14 +8,14 @@ import { useTheme } from "@/hooks/use-theme";
 import { useThemeCurtain } from "@/hooks/use-theme-curtain";
 import { useTranslations } from "@/hooks/use-translations";
 
-const sceneClass = "pointer-events-none absolute inset-0 size-full opacity-0 transition-opacity duration-(--motion-fast) group-hover:opacity-100 group-active:opacity-100 forced-colors:hidden";
+const sceneClass = "max-[700px]:hidden pointer-events-none absolute inset-0 size-full opacity-0 transition-opacity duration-(--motion-fast) group-hover:opacity-100 group-active:opacity-100 forced-colors:hidden";
 
 const starTwinkles = [
-  "theme-star [animation:theme-star-twinkle_1.6s_ease-in-out_infinite]",
-  "theme-star [animation:theme-star-twinkle_2.2s_ease-in-out_0.35s_infinite]",
-  "theme-star [animation:theme-star-twinkle_1.8s_ease-in-out_0.8s_infinite]",
-  "theme-star [animation:theme-star-twinkle_2.4s_ease-in-out_0.15s_infinite]",
-  "theme-star [animation:theme-star-twinkle_1.5s_ease-in-out_1s_infinite]",
+  "theme-star max-[700px]:animate-none [animation:theme-star-twinkle_1.6s_ease-in-out_infinite]",
+  "theme-star max-[700px]:animate-none [animation:theme-star-twinkle_2.2s_ease-in-out_0.35s_infinite]",
+  "theme-star max-[700px]:animate-none [animation:theme-star-twinkle_1.8s_ease-in-out_0.8s_infinite]",
+  "theme-star max-[700px]:animate-none [animation:theme-star-twinkle_2.4s_ease-in-out_0.15s_infinite]",
+  "theme-star max-[700px]:animate-none [animation:theme-star-twinkle_1.5s_ease-in-out_1s_infinite]",
 ];
 
 const cloudMotion = "opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:opacity-100 group-active:opacity-100 motion-reduce:transition-none";
@@ -34,7 +34,7 @@ function ThemeScene({ night }: { night: boolean }) {
   }
 
   return (
-    <svg aria-hidden="true" viewBox="0 0 44 44" className="pointer-events-none absolute inset-0 size-full forced-colors:hidden" fill="#fff">
+    <svg aria-hidden="true" viewBox="0 0 44 44" className="max-[700px]:hidden pointer-events-none absolute inset-0 size-full forced-colors:hidden" fill="#fff">
       <g className={`${cloudMotion} [transform:translateX(16px)] group-hover:[transform:translateX(0)] group-active:[transform:translateX(0)]`}>
         <path d="M28.4 13.2c.2-1.7 1.7-2.7 3.2-2.2.5-1.5 2.4-2 3.6-.7 1.1-1 2.9-.7 3.5.6 1.4-.1 2.6 1 2.3 2.4.8.4 1 1.4.3 2H28.6c-.4-.6-.4-1.4-.2-2.1z" />
       </g>
@@ -57,9 +57,9 @@ function Sun() {
 }
 
 const buttonClass = [
-  "group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-border bg-surface/50 text-secondary",
-  "transition-[background-color,color,transform,box-shadow,border-color] duration-(--motion-fast)",
-  "hover:border-transparent active:border-transparent active:shadow-[inset_0_2px_5px_#00000055]",
+  "group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-border bg-surface min-[701px]:bg-surface/50 text-secondary",
+  "max-[700px]:transition-none transition-[background-color,color,transform,box-shadow,border-color] duration-(--motion-fast)",
+  "hover:border-transparent active:border-transparent min-[701px]:active:shadow-[inset_0_2px_5px_#00000055]",
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent",
   "forced-colors:hover:bg-Highlight forced-colors:hover:text-HighlightText forced-colors:active:bg-Highlight forced-colors:active:text-HighlightText",
 ].join(" ");

@@ -32,6 +32,18 @@ export function useSeatSelectionScroll() {
   return useScrollScene("[data-booking-viewport]", useCallback(({ root, viewport }) => {
     const announcement = root.querySelector<HTMLElement>("[data-booking-announcement]");
 
+    const maps = Array.from(root.querySelectorAll<SVGSVGElement>("[data-booking-map]"));
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-booking-continue]"));
+    const previousProperties = new Map<string, string>();
+    function writeProperty(name: string, value: string) {
+      if (previousProperties.get(name) === value) return;
+      previousProperties.set(name, value);
+      for (const map of maps) map.style.setProperty(name, value);
+    }
+    function writeState(name: string, value: string) {
+      if (root.dataset[name] !== value) root.dataset[name] = value;
+    }
+
     let lastPhase = "";
     let lastAction = "";
     let lastCount = -1;
@@ -74,7 +86,6 @@ export function useSeatSelectionScroll() {
         "--booking-selected-1": ease((p - 0.715) / 0.025),
         "--booking-selected-2": ease((p - 0.785) / 0.025),
         "--booking-selected-3": ease((p - 0.855) / 0.025),
-        "--booking-progress": p,
         "--booking-gesture": !reducedMotion && (mapGesture || seatGesture) ? 1 : 0,
         "--booking-gesture-spread": mapGesture ? ease((p - 0.08) / 0.07) : ease((p - 0.55) / 0.07),
         "--booking-touch": !reducedMotion && ((sectionPress || backPress) || panning || selecting || pressingContinue) ? 1 : 0,
@@ -82,19 +93,23 @@ export function useSeatSelectionScroll() {
         "--booking-pressed": mapGesture || seatGesture || (sectionPress || backPress) || panning || selecting || pressingContinue ? 1 : 0,
         "--booking-continue-pressed": pressingContinue ? 1 : 0,
       };
-      for (const [name, value] of Object.entries(properties)) root.style.setProperty(name, value.toFixed(4));
-      root.style.setProperty("--booking-cursor-x", `${(start[1] + (end[1] - start[1]) * travel).toFixed(2)}px`);
-      root.style.setProperty("--booking-cursor-y", `${(start[2] + (end[2] - start[2]) * travel).toFixed(2)}px`);
+      for (const [name, value] of Object.entries(properties)) writeProperty(name, value.toFixed(4));
+      writeProperty("--booking-cursor-x", `${(start[1] + (end[1] - start[1]) * travel).toFixed(2)}px`);
+      writeProperty("--booking-cursor-y", `${(start[2] + (end[2] - start[2]) * travel).toFixed(2)}px`);
 
       const view = firstGrid > 0.5 || secondGrid > 0.5 ? "seats" : "map";
       const phase = review ? "review" : view === "map" ? "explore" : firstSection ? "section" : count === 0 ? "seats" : "selected";
-      root.dataset.action = action;
-      root.dataset.section = firstSection ? "N-02" : "N-03";
-      root.dataset.view = view;
-      root.dataset.review = String(review);
-      root.dataset.ready = String(count === 3);
-      root.dataset.selecting = String(count > 0);
-      root.querySelectorAll<HTMLButtonElement>("[data-booking-continue]").forEach((button) => { button.disabled = count !== 3; });
+      writeState("action", action);
+      writeState("section", firstSection ? "N-02" : "N-03");
+      writeState("view", view);
+      writeState("review", String(review));
+      writeState("ready", String(count === 3));
+      writeState("selecting", String(count > 0));
+      // Cull only fully transparent SVG layers; keep both during crossfades.
+      writeState("mapVisible", String(properties["--booking-map-opacity"] > 0));
+      writeState("limitedVisible", String(firstGrid > 0));
+      writeState("gridVisible", String(secondGrid > 0));
+      if (count !== lastCount) for (const button of buttons) button.disabled = count !== 3;
       if (phase !== lastPhase || action !== lastAction || count !== lastCount) {
         lastPhase = phase;
         lastAction = action;

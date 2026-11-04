@@ -166,3 +166,17 @@
   --ambient-dot-opacity-mobile: 0.16;
   --gradient-ticketing: radial-gradient(ellipse at 20% 80%, #643451 0%, transparent 50%), linear-gradient(125deg, #28203c, #3a2d60 60%, #263a58);
 }
+
+/* Opaque mobile surfaces avoid alpha blending in repeated device/UI layers. */
+@media (max-width: 700px) {
+  :root:not([data-theme="dark"]) {
+    --border: #cbcfd7;
+    --border-control: #81758f;
+    --device-selection: #ede9fb;
+    --device-border: #e9e2dd;
+  }
+  :root[data-theme="dark"] {
+    --border: #3f354f;
+    --border-control: #8c7c9e;
+  }
+}

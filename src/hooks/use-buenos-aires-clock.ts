@@ -33,19 +33,21 @@ export function useBuenosAiresClock() {
   const [colonOn, setColonOn] = useState(true);
 
   useEffect(() => {
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 700px)");
     let timeout: number | null = null;
 
     function tick() {
       const now = new Date();
       setDate(now);
       setColonOn(motion.matches || now.getSeconds() % 2 === 0);
-      // Align to the next whole second so the blink stays in sync.
-      timeout = window.setTimeout(tick, 1000 - (now.getTime() % 1000));
+      // Mobile uses a static separator and only needs a refresh each minute.
+      const interval = motion.matches ? 60_000 : 1000;
+      timeout = window.setTimeout(tick, interval - (now.getTime() % interval));
     }
 
     function onMotionChange() {
-      if (motion.matches) setColonOn(true);
+      if (timeout !== null) window.clearTimeout(timeout);
+      tick();
     }
 
     tick();

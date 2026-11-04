@@ -18,7 +18,7 @@ export function HeroBackground() {
       ref={details}
       data-running="false"
       aria-hidden="true"
-      className="group/hero-details pointer-events-none absolute inset-0 -z-1 overflow-hidden text-accent mask-[linear-gradient(to_bottom,transparent,black_10%,black_85%,transparent)] [--detail-x:0px] [--detail-depth:0] [--detail-size:48px] [--detail-duration:40s] [--detail-delay:0s] [--detail-start:0px] [--detail-end:100vh] [--detail-tilt:0deg] [--detail-turn:0deg] [--detail-opacity:0] motion-reduce:hidden forced-colors:hidden"
+      className="group/hero-details max-[700px]:hidden pointer-events-none absolute inset-0 -z-1 overflow-hidden text-accent mask-[linear-gradient(to_bottom,transparent,black_10%,black_85%,transparent)] [--detail-x:0px] [--detail-depth:0] [--detail-size:48px] [--detail-duration:40s] [--detail-delay:0s] [--detail-start:0px] [--detail-end:100vh] [--detail-tilt:0deg] [--detail-turn:0deg] [--detail-opacity:0] motion-reduce:hidden forced-colors:hidden"
     >
       {detailLayers.map(({ depth, className }) => (
       <div key={depth} data-detail-layer={depth} className={className}>

@@ -20,7 +20,7 @@ export function BuenosAiresClock({
           aria-hidden="true"
           className="relative size-1.5 shrink-0 rounded-full bg-accent"
         >
-          <span className="absolute inset-0 animate-ping rounded-full bg-accent/70 motion-reduce:hidden" />
+          <span className="max-[700px]:hidden absolute inset-0 animate-ping rounded-full bg-accent/70 motion-reduce:hidden" />
         </span>
         <span>{label}</span>
         <time
@@ -31,7 +31,7 @@ export function BuenosAiresClock({
           <span>{display.hour}</span>
           <span
             aria-hidden="true"
-            className={`inline-block w-[0.35em] text-center motion-reduce:!opacity-100 ${colonOn ? "opacity-100" : "opacity-0"}`}
+            className={`inline-block w-[0.35em] text-center max-[700px]:opacity-100! motion-reduce:!opacity-100 ${colonOn ? "opacity-100" : "opacity-0"}`}
           >
             :
           </span>

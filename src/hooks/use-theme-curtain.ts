@@ -8,7 +8,7 @@ export function useThemeCurtain() {
 
   async function playCurtain(swapTheme: () => void) {
     const curtain = curtainRef.current;
-    if (!curtain || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!curtain || matchMedia("(prefers-reduced-motion: reduce), (max-width: 700px)").matches) {
       swapTheme();
       return;
     }

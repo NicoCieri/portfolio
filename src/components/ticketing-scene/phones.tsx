@@ -5,12 +5,12 @@ import { Hand } from "@/components/ticketing-scene/hand";
 import { DemoQr } from "@/components/ticketing-scene/demo-qr";
 import { useTranslations } from "@/hooks/use-translations";
 
-const initialState = "absolute inset-0 flex flex-col p-3 opacity-100 transition-opacity duration-200 group-data-[validated=true]/ticketing:opacity-0 min-[701px]:p-5 motion-reduce:transition-none";
-const successState = "absolute inset-0 flex items-center justify-center px-3 text-center opacity-0 transition-opacity duration-300 group-data-[validated=true]/ticketing:opacity-100 min-[701px]:px-5 motion-reduce:transition-none";
-const attendeeReveal = "translate-y-2 scale-95 opacity-0 transition-[opacity,translate,scale] duration-500 ease-out group-data-[revealed=true]/ticketing:translate-y-0 group-data-[revealed=true]/ticketing:scale-100 group-data-[revealed=true]/ticketing:opacity-100 motion-reduce:transition-none";
-const controllerReveal = "translate-y-2 scale-95 opacity-0 transition-[opacity,translate,scale] duration-500 ease-out group-data-[validated=true]/ticketing:translate-y-0 group-data-[validated=true]/ticketing:scale-100 group-data-[validated=true]/ticketing:opacity-100 motion-reduce:transition-none";
-const attendeeCheck = "[stroke-dashoffset:1] transition-[stroke-dashoffset] delay-100 duration-500 ease-out group-data-[revealed=true]/ticketing:[stroke-dashoffset:0] motion-reduce:transition-none";
-const controllerCheck = "[stroke-dashoffset:1] transition-[stroke-dashoffset] delay-100 duration-500 ease-out group-data-[validated=true]/ticketing:[stroke-dashoffset:0] motion-reduce:transition-none";
+const initialState = "absolute inset-0 flex flex-col p-3 opacity-100 transition-opacity duration-200 group-data-[validated=true]/ticketing:opacity-0 min-[701px]:p-5 max-[700px]:transition-none motion-reduce:transition-none";
+const successState = "absolute inset-0 flex items-center justify-center px-3 text-center opacity-0 transition-opacity duration-300 group-data-[validated=true]/ticketing:opacity-100 min-[701px]:px-5 max-[700px]:transition-none motion-reduce:transition-none";
+const attendeeReveal = "translate-y-2 scale-95 opacity-0 transition-[opacity,translate,scale] duration-500 ease-out group-data-[revealed=true]/ticketing:translate-y-0 group-data-[revealed=true]/ticketing:scale-100 group-data-[revealed=true]/ticketing:opacity-100 max-[700px]:transition-none motion-reduce:transition-none";
+const controllerReveal = "translate-y-2 scale-95 opacity-0 transition-[opacity,translate,scale] duration-500 ease-out group-data-[validated=true]/ticketing:translate-y-0 group-data-[validated=true]/ticketing:scale-100 group-data-[validated=true]/ticketing:opacity-100 max-[700px]:transition-none motion-reduce:transition-none";
+const attendeeCheck = "[stroke-dashoffset:1] transition-[stroke-dashoffset] delay-100 duration-500 ease-out group-data-[revealed=true]/ticketing:[stroke-dashoffset:0] max-[700px]:transition-none motion-reduce:transition-none";
+const controllerCheck = "[stroke-dashoffset:1] transition-[stroke-dashoffset] delay-100 duration-500 ease-out group-data-[validated=true]/ticketing:[stroke-dashoffset:0] max-[700px]:transition-none motion-reduce:transition-none";
 
 function SuccessScreen({ controller }: { controller: boolean }) {
   const t = useTranslations().ticketing.phone;
