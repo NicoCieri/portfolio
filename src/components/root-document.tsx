@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import type { ReactNode } from "react";
 import { LocaleProvider } from "@/components/locale-provider";
 import type { Locale } from "@/i18n/config";
@@ -15,6 +16,18 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
         <script dangerouslySetInnerHTML={{ __html: footerNavigationStart + `try{document.documentElement.dataset.theme=localStorage.getItem("portfolio-theme")==="dark"?"dark":"light"}catch{}` }} />
         <LocaleProvider locale={locale}>{children}</LocaleProvider>
         <script dangerouslySetInnerHTML={{ __html: footerNavigationRestore }} />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-M85DWEC1HY"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-M85DWEC1HY');
+          `}
+        </Script>
       </body>
     </html>
   );
