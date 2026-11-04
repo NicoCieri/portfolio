@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
+import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
 import { SectionAtmosphere } from "@/components/section-atmosphere";
@@ -20,22 +21,22 @@ export function SeatSelectionExperience() {
   const steps = stepMeta.map((meta, index) => ({ ...meta, ...t.steps[index] }));
   return (
     <SeatScrollScene>
-      <div data-booking-viewport className={`${viewportReflowClass} isolate sticky top-0 flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(740px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-center gap-5 py-5 min-[701px]:gap-3 min-[701px]:py-4 motion-reduce:static motion-reduce:h-auto`}>
+      <div data-booking-viewport data-mobile-demo-viewport className={`${mobileDemoViewportClass} ${viewportReflowClass} isolate sticky top-0 flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(740px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-center gap-5 py-5 min-[701px]:gap-3 min-[701px]:py-4 motion-reduce:static motion-reduce:h-auto`}>
         <SectionAtmosphere tone="violet" />
         <VenueBackground />
-        <header className="page-shell">
+        <header className={`${mobileDemoHeaderClass} page-shell`}>
           <p className="text-meta font-medium text-secondary">{t.eyebrow}</p>
           <div className="mt-3 grid gap-4 min-[901px]:grid-cols-[1.15fr_1fr] min-[901px]:items-start min-[901px]:gap-16">
             <h2 aria-label={`${t.headingLine1} ${t.headingLine2}${t.headingAccent}`} id="booking-heading" className="max-w-[22ch] text-[clamp(32px,3.8vw,48px)] leading-[1.05] font-bold tracking-[-0.045em]">{t.headingLine1}<br className="hidden min-[701px]:block" /> {t.headingLine2}<span className="text-accent">{t.headingAccent}</span></h2>
             <p id="booking-description" className="max-w-[40ch] text-body leading-[1.65] text-secondary min-[701px]:text-lead min-[901px]:pt-1">{t.description}</p>
           </div>
         </header>
-        <figure className="page-shell min-[701px]:max-w-[min(1100px,calc((100svh-480px)*1.65))]">
-          <BookingDevices />
+        <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1100px,calc((100svh-480px)*1.65))]`}>
+          <MobileDemoStage><BookingDevices /></MobileDemoStage>
           <figcaption className="mt-3 text-center text-[12px] text-secondary">{t.caption}</figcaption>
         </figure>
         <div className="page-shell flex min-h-12 items-center justify-center text-center">
-          <Button data-booking-continue disabled size="sm" className="hidden group-data-[ready=true]/booking:inline-flex group-data-[review=true]/booking:hidden">{t.ui.continue}</Button>
+          <Button data-booking-continue disabled size="sm" className="hidden! group-data-[ready=true]/booking:inline-flex! group-data-[review=true]/booking:hidden!">{t.ui.continue}</Button>
           <p data-booking-review tabIndex={-1} className="hidden rounded text-small font-semibold group-data-[review=true]/booking:block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--focus-ring)">{t.ui.reviewAnnouncement}</p>
         </div>
         <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>

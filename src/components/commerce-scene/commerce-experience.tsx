@@ -1,5 +1,6 @@
 "use client";
 
+import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass, mobileDemoFigureClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
 import { SectionAtmosphere } from "@/components/section-atmosphere";
@@ -20,18 +21,18 @@ export function CommerceExperience() {
   return (
     <>
       <CommerceScrollScene>
-        <div data-commerce-viewport className={`${viewportReflowClass} isolate sticky top-0 flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(640px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-center gap-4 py-4 min-[701px]:gap-5 motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
+        <div data-commerce-viewport data-mobile-demo-viewport className={`${mobileDemoViewportClass} ${viewportReflowClass} isolate sticky top-0 flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(640px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-center gap-4 py-4 min-[701px]:gap-5 motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
         <SectionAtmosphere tone="pink" />
         <CommerceBackground />
-          <header className="page-shell">
+          <header className={`${mobileDemoHeaderClass} page-shell`}>
             <p className="text-meta font-medium text-secondary">{t.eyebrow}</p>
             <div className="mt-3 grid gap-3 min-[901px]:grid-cols-[1.15fr_1fr] min-[901px]:gap-16">
               <h2 aria-label={`${t.headingLine1} ${t.headingAccent}`} id="commerce-heading" className="max-w-[22ch] text-[clamp(30px,3.8vw,48px)] leading-[1.05] font-bold tracking-[-0.045em]">{t.headingLine1}<br className="hidden min-[701px]:block" /> <span className="text-accent">{t.headingAccent}</span></h2>
               <p className="max-w-[46ch] text-[12px] leading-relaxed text-secondary min-[701px]:text-body">{t.description}</p>
             </div>
           </header>
-          <figure className="page-shell min-[701px]:max-w-[min(1080px,calc((100svh-398px)*1.75))]">
-            <ShoppingIllustration />
+          <figure className={`${mobileDemoFigureClass} page-shell min-[701px]:max-w-[min(1080px,calc((100svh-398px)*1.75))]`}>
+            <MobileDemoStage><ShoppingIllustration /></MobileDemoStage>
             <figcaption className="mt-4 text-center text-[11px] text-secondary min-[701px]:text-meta">{t.caption}</figcaption>
           </figure>
           <ol className="page-shell grid grid-cols-3 gap-3 min-[701px]:gap-8" aria-label={t.stepsAria}>

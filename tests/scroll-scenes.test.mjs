@@ -309,3 +309,63 @@ test("footer language navigation restores its position before revealing the new 
     }
   }
 });
+
+test("mobile illustrations resize around text and controls, then release desktop overrides", () => {
+  let effect, onResize, stopped = false, nextFrame = 0;
+  const values = new Map();
+  const frames = new Map();
+  const mobile = { ...events(), matches: true };
+  const browser = { ...events(), matchMedia: () => mobile };
+  const header = { offsetHeight: 174 };
+  const art = { offsetHeight: 372 };
+  const viewport = { clientHeight: 735, children: [] };
+  const stage = {
+    clientWidth: 353,
+    get offsetHeight() { return parseFloat(values.get("--demo-stage-height")) || 240; },
+    style: {
+      getPropertyValue: name => values.get(name) || "",
+      setProperty: (name, value) => values.set(name, value),
+      removeProperty: name => values.delete(name),
+    },
+    querySelector: () => art,
+    closest: () => viewport,
+  };
+  viewport.children = [header, { get offsetHeight() { return stage.offsetHeight + 32; } }, { offsetHeight: 48 }, { offsetHeight: 69 }];
+  let position = "sticky";
+  const load = sourceLoader({ react: { useRef: () => ({ current: stage }), useLayoutEffect: fn => { effect = fn; } } }, {
+    window: browser,
+    getComputedStyle: element => element === viewport
+      ? { position, paddingTop: "12px", paddingBottom: "80px", rowGap: "12px" }
+      : { position: "static", display: "block" },
+    requestAnimationFrame: callback => { frames.set(++nextFrame, callback); return nextFrame; },
+    cancelAnimationFrame: id => frames.delete(id),
+    ResizeObserver: class {
+      constructor(callback) { onResize = callback; }
+      observe() {}
+      disconnect() { stopped = true; }
+    },
+  });
+  load("@/hooks/use-mobile-demo-layout").useMobileDemoLayout();
+  const cleanup = effect();
+  const flush = () => { const callbacks = [...frames.values()]; frames.clear(); callbacks.forEach(callback => callback()); };
+  const assertFits = () => {
+    const total = viewport.children.reduce((sum, child) => sum + child.offsetHeight, 0) + 92 + 36;
+    assert.ok(total <= viewport.clientHeight);
+  };
+  assertFits();
+  const initial = parseFloat(values.get("--demo-scale"));
+  header.offsetHeight = 240;
+  onResize(); onResize(); assert.equal(frames.size, 1); flush();
+  assert.ok(parseFloat(values.get("--demo-scale")) < initial);
+  assertFits();
+  viewport.clientHeight = 667; browser.emit("resize"); flush(); assertFits();
+  position = "static"; onResize(); flush();
+  assert.equal(values.get("--demo-scale"), "0.8500");
+  mobile.matches = false; mobile.emit("change"); flush();
+  assert.equal(values.size, 0);
+  onResize(); cleanup();
+  assert.equal(frames.size, 0);
+  assert.equal(browser.handlers.size, 0);
+  assert.equal(mobile.handlers.size, 0);
+  assert.equal(stopped, true);
+});

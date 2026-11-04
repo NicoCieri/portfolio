@@ -1,5 +1,6 @@
 "use client";
 
+import { MobileDemoStage, mobileDemoViewportClass, mobileDemoHeaderClass } from "@/components/mobile-demo-stage";
 import { viewportReflowClass } from "@/components/scene-classes";
 
 import { EventEntrance } from "@/components/ticketing-scene/event-entrance";
@@ -11,10 +12,10 @@ export function TicketingExperience() {
   const t = useTranslations().ticketing;
   return (
     <ScrollScene>
-      <div data-scene-viewport className={`${viewportReflowClass} sticky top-0 isolate flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(620px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-between overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:bg-(image:--gradient-ticketing) before:mask-[linear-gradient(to_bottom,transparent,black_22%,black_78%,transparent)] motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
+      <div data-scene-viewport data-mobile-demo-viewport className={`${mobileDemoViewportClass} ${viewportReflowClass} sticky top-0 isolate flex h-[calc(100svh-88px-env(safe-area-inset-bottom))] min-h-[min(620px,calc(100svh-88px-env(safe-area-inset-bottom)))] flex-col justify-between overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:bg-(image:--gradient-ticketing) before:mask-[linear-gradient(to_bottom,transparent,black_22%,black_78%,transparent)] motion-reduce:static motion-reduce:h-auto motion-reduce:min-h-0`}>
         <EventEntrance />
 
-        <header className="page-shell relative z-20 pt-8 min-[701px]:pt-10 [@media(max-height:720px)]:pt-5">
+        <header className={`${mobileDemoHeaderClass} page-shell relative z-20 pt-8 min-[701px]:pt-10 [@media(max-height:720px)]:pt-5`}>
           <p className="text-meta font-medium min-[701px]:text-small">{t.eyebrow}</p>
           <div className="mt-3 grid grid-cols-1 gap-4 min-[1001px]:grid-cols-[1.5fr_1fr] min-[1001px]:items-end min-[1001px]:gap-12">
             <h2 className="max-w-[20ch] text-[clamp(32px,4.3vw,58px)] leading-[1.03] font-bold tracking-[-0.045em] [@media(max-height:720px)]:text-[28px]" id="ticketing-heading">{t.headingLine1}<br />{" "} <span className="text-accent">{t.headingLine2}</span></h2>
@@ -22,12 +23,14 @@ export function TicketingExperience() {
           </div>
         </header>
 
-        <div className="pointer-events-none absolute inset-0 isolate [@media(max-height:600px),(max-width:359px)]:relative [@media(max-height:600px),(max-width:359px)]:inset-auto [@media(max-height:600px),(max-width:359px)]:my-6 [@media(max-height:600px),(max-width:359px)]:h-[360px] motion-reduce:relative motion-reduce:inset-auto motion-reduce:my-6 motion-reduce:h-[360px]" aria-hidden="true">
-          <Phone side="attendee" />
-          <Phone side="controller" />
+        <div className="pointer-events-none absolute inset-0 isolate max-[700px]:relative max-[700px]:inset-auto max-[700px]:w-full motion-reduce:relative motion-reduce:inset-auto motion-reduce:my-6 motion-reduce:h-[360px]" aria-hidden="true">
+          <MobileDemoStage height={400}>
+            <Phone side="attendee" />
+            <Phone side="controller" />
+          </MobileDemoStage>
         </div>
 
-        <footer className="page-shell relative z-20 pb-6 min-[701px]:pb-8">
+        <footer className="page-shell relative z-20 pb-6 min-[701px]:pb-8 max-[700px]:pb-0 max-[700px]:[&>div]:mb-2 max-[700px]:[&>div]:gap-2 max-[700px]:[&_p]:text-[11px]">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div className="text-small font-semibold min-[701px]:text-body">
               <p className="group-data-[phase=scanning]/ticketing:hidden group-data-[validated=true]/ticketing:hidden motion-reduce:hidden">{t.statusReady}</p>
