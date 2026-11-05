@@ -29,6 +29,7 @@ export function useSectionNavigation() {
     });
     if (!sections.length) return;
 
+    const hero = sections.find(({ id }) => id === HOME_SECTION_ID)?.element;
     const firstProjectId = sections.find(({ id }) => id !== HOME_SECTION_ID)?.id;
     const heldSectionIds = new Set<string>([HOME_SECTION_ID, TOP_ALIAS_ID, WORK_ALIAS_ID, ...sections.map(({ id }) => id)]);
     // A load or history traversal keeps its hash until that target is on screen.
@@ -65,8 +66,8 @@ export function useSectionNavigation() {
 
     function update() {
       frame = 0;
-      // Keep the full page journey available, including the hero.
-      const visible = true;
+      // Show navigation only after the hero has completely left the viewport.
+      const visible = hero ? hero.getBoundingClientRect().bottom <= 0 : sections[0].element.getBoundingClientRect().top <= 0;
       const readingLine = window.innerHeight * 0.35;
       let activeId = sections[0].id;
       for (const section of sections) {

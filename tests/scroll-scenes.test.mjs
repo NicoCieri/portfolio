@@ -349,21 +349,23 @@ test("section navigation includes Home, returns to the hero and preserves the wo
     ResizeObserver: class { observe() {} disconnect() {} },
   });
   const sections = load("@/content/section-navigation").portfolioSections;
-  const elements = Object.fromEntries(sections.map(({ id }, index) => [id, { getBoundingClientRect: () => ({ top: (index === 0 ? 80 : 1000 + (index - 1) * 6000) - browser.scrollY }) }]));
+  const elements = Object.fromEntries(sections.map(({ id }, index) => [id, { getBoundingClientRect: () => ({ top: (index === 0 ? 80 : 1000 + (index - 1) * 6000) - browser.scrollY, bottom: (index === 0 ? 1000 : 7000 + (index - 1) * 6000) - browser.scrollY }) }]));
   elements.top = { getBoundingClientRect: () => ({ top: -browser.scrollY }) };
   const hook = load("@/hooks/use-section-navigation").useSectionNavigation();
   const cleanup = effect();
   const flush = () => { const callbacks = [...frames.values()]; frames.clear(); callbacks.forEach(callback => callback()); };
   assert.equal(sections[0].id, "about");
   assert.equal(navigation.activeId, "about");
-  assert.equal(navigation.visible, true);
+  assert.equal(navigation.visible, false);
   assert.equal(browser.location.hash, "");
   browser.scrollY = 1000; browser.emit("scroll"); flush();
   assert.equal(navigation.activeId, "ticketing");
+  assert.equal(navigation.visible, true);
   hook.selectSection("about");
   assert.equal(navigation.pendingId, "about");
   browser.location.hash = "#top"; browser.emit("popstate");
   browser.scrollY = 500; flush();
+  assert.equal(navigation.visible, false);
   assert.equal(browser.location.hash, "#top");
   browser.scrollY = 0; browser.emit("scroll"); flush();
   assert.equal(navigation.activeId, "about");
