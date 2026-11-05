@@ -2,8 +2,13 @@
 
 import { useEffect, type RefObject } from "react";
 
-const MAX_TILT_DEG = 22;
-const INFLUENCE_PX = 480;
+const MAX_TILT_DEG = 28;
+const INFLUENCE_PX = 560;
+const SMOOTHING_MS = 110;
+const FRAME_INTERVAL_MS = 1000 / 60;
+const FRAME_TOLERANCE_MS = 1;
+const MAX_FRAME_DELTA_MS = 64;
+const SETTLE_THRESHOLD_DEG = 0.04;
 
 /**
  * Tilts the whole portrait disc as one rigid plane (uniform rotateX/Y).
@@ -50,16 +55,16 @@ export function useHeroPortraitParallax(
     }
 
     function tick(time: number) {
-      if (lastTime !== null && time - lastTime < 1000 / 60 - 1) {
+      if (lastTime !== null && time - lastTime < FRAME_INTERVAL_MS - FRAME_TOLERANCE_MS) {
         raf = requestAnimationFrame(tick);
         return;
       }
-      const elapsed = lastTime === null ? 1000 / 60 : Math.min(time - lastTime, 64);
-      const smoothing = 1 - Math.exp(-elapsed / 90);
+      const elapsed = lastTime === null ? FRAME_INTERVAL_MS : Math.min(time - lastTime, MAX_FRAME_DELTA_MS);
+      const smoothing = 1 - Math.exp(-elapsed / SMOOTHING_MS);
       currentRotateX += (targetRotateX - currentRotateX) * smoothing;
       currentRotateY += (targetRotateY - currentRotateY) * smoothing;
       const settled =
-        Math.hypot(targetRotateX - currentRotateX, targetRotateY - currentRotateY) < 0.04;
+        Math.hypot(targetRotateX - currentRotateX, targetRotateY - currentRotateY) < SETTLE_THRESHOLD_DEG;
       if (settled) {
         currentRotateX = targetRotateX;
         currentRotateY = targetRotateY;
