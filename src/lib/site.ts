@@ -4,11 +4,11 @@ import { localePaths, type Locale } from "@/i18n/config";
 export const site = {
   url: "https://nicocieri.dev",
   name: "Nicolás Cieri",
-  title: "Nicolás Cieri — Senior Software Engineer",
+  title: "Nicolás Cieri — Senior Software Engineer · Tech Lead",
   linkedin: "https://www.linkedin.com/in/nicolas-cieri-salcedo-6b37bb97/",
   descriptions: {
-    en: "Nicolás Cieri, Senior Software Engineer. 10+ years building thoughtful interfaces for complex products, with experience in ticketing, operational tools and e-commerce.",
-    es: "Nicolás Cieri, Senior Software Engineer. Más de 10 años construyendo interfaces para productos complejos, con experiencia en ticketing, herramientas de gestión y e-commerce.",
+    en: "Nicolás Cieri, Senior Software Engineer · Tech Lead. 10+ years building thoughtful interfaces for complex products, with experience in ticketing, operational tools and e-commerce.",
+    es: "Nicolás Cieri, Senior Software Engineer · Tech Lead. Más de 10 años construyendo interfaces para productos complejos, con experiencia en ticketing, herramientas de gestión y e-commerce.",
   },
 } as const;
 
@@ -17,7 +17,7 @@ export function pageMetadata(locale: Locale): Metadata {
   const description = site.descriptions[locale];
   const image = {
     url: "/images/social-card.png", width: 1200, height: 630,
-    alt: "Nicolás Cieri — Senior Software Engineer · React · Next.js · TypeScript",
+    alt: "Nicolás Cieri — Senior Software Engineer · Tech Lead · React · Next.js · TypeScript",
   };
   return {
     metadataBase: new URL(site.url),

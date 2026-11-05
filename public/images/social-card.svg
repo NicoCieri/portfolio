@@ -5,7 +5,7 @@
 <rect x="64" y="64" width="96" height="96" rx="24" fill="#fff9ed"/>
 <text x="77" y="132" font-family="Arial,sans-serif" font-size="57" font-weight="700" letter-spacing="-5" fill="#24184c">nc.</text>
 <g font-family="Arial,sans-serif"><text x="64" y="285" font-size="86" font-weight="700" letter-spacing="-3" fill="#fff9ed">Nicolás Cieri</text>
-<text x="64" y="355" font-size="43" font-weight="500" fill="#b6adff">Senior Software Engineer</text>
+<text x="64" y="355" font-size="43" font-weight="500" fill="#b6adff">Senior Software Engineer · Tech Lead</text>
 <text x="67" y="422" font-size="27" fill="#d1c3e4">React  ·  Next.js  ·  TypeScript</text>
 <path d="M64 487H1136" stroke="#d1c3e4" opacity=".25"/>
 <text x="64" y="551" font-size="29" fill="#fff9ed">nicocieri.dev</text><text x="1136" y="551" font-size="25" text-anchor="end" fill="#d1c3e4">Buenos Aires, Argentina</text></g>

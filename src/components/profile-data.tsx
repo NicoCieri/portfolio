@@ -14,7 +14,7 @@ export function ProfileData({ locale }: { locale: Locale }) {
     inLanguage: locale,
     mainEntity: {
       "@type": "Person", "@id": personId,
-      name: site.name, url: site.url, jobTitle: "Senior Software Engineer",
+      name: site.name, url: site.url, jobTitle: "Senior Software Engineer · Tech Lead",
       image: `${site.url}/images/nicolas-hero.webp`, sameAs: [site.linkedin],
     },
   };
