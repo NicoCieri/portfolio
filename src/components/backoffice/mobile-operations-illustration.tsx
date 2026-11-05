@@ -31,6 +31,12 @@ export function MobileOperationsIllustration() {
           <div className="absolute -inset-2 rounded-full border border-(--device-accent)/40 opacity-(--bo-press,0) [transform:scale(calc(0.8_+_var(--bo-press,0)*0.4))]" />
         </div>
       </div>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-30 bg-(--device-screen) p-4 [opacity:calc(1_-_var(--scene-content-reveal,1))]">
+        <div className="mb-6 flex h-7 items-center gap-3"><span className="size-7 rounded-md bg-(--device-border)" /><span className="h-3 w-28 rounded bg-(--device-border)" /></div>
+        <div className="mb-7 grid grid-cols-3 gap-3">{[0, 1, 2].map(index => <div key={index}><div className="h-2 w-16 rounded bg-(--device-border)" /><div className="mt-3 h-7 w-10 rounded bg-(--device-border)" /></div>)}</div>
+        <div className="mb-3 h-2 w-28 rounded bg-(--device-border)" />
+        {[0, 1, 2].map(index => <div key={index} className="flex h-16 items-center justify-between border-b border-(--device-border)"><div><div className="h-3 w-20 rounded bg-(--device-border)" /><div className="mt-2 h-2 w-28 rounded bg-(--device-border)" /></div><div className="h-3 w-12 rounded bg-(--device-border)" /></div>)}
+      </div>
     </div>
   );
 }

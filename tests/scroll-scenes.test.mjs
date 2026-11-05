@@ -626,7 +626,6 @@ test("desktop demos visibly progress before the section reaches the top", () => 
     ["ticketing", "useTicketingScroll", "--scene-scroll"],
     ["seat-selection", "useSeatSelectionScroll", "--demo-progress"],
     ["stadium-editor", "useStadiumEditorScroll", "--demo-progress"],
-    ["backoffice", "useBackofficeScroll", "--bo-progress"],
     ["commerce", "useCommerceScroll", "--commerce-progress"],
     ["airport", "useAirportScroll", "--airport-progress"],
     ["craft", "useCraftScroll", "--craft-progress"],
@@ -689,4 +688,32 @@ test("hero snapshot resolves either palette and restores the live theme on failu
     assert.throws(() => load("@/lib/hero-snapshot").createHeroSnapshot({ getBoundingClientRect: () => ({}) }, target), /style capture failed/);
     assert.equal(root.dataset.theme, original);
   }
+});
+
+
+test("backoffice holds its skeleton until the artwork is visible, then reveals before actions", () => {
+  const h = sceneHarness("backoffice", "useBackofficeScroll", "en");
+  for (const top of [1000, 200, 0, -200]) {
+    h.setTop(top); h.controller.update(false);
+    assert.equal(Number(h.variables.get("--scene-content-reveal")), 0);
+    assert.equal(Number(h.variables.get("--bo-progress")), 0);
+  }
+  h.setTop(-400); h.controller.update(false);
+  assert.ok(Number(h.variables.get("--scene-content-reveal")) > 0);
+  assert.ok(Number(h.variables.get("--scene-content-reveal")) < 1);
+  h.setTop(-700); h.controller.update(false);
+  assert.equal(Number(h.variables.get("--scene-content-reveal")), 1);
+  assert.ok(Number(h.variables.get("--bo-progress")) > 0);
+  for (const p of [0, 0.04, 0.08]) {
+    h.controller.update(false, p);
+    assert.equal(Number(h.variables.get("--scene-content-reveal")), 0);
+    assert.equal(Number(h.variables.get("--bo-progress")), 0);
+  }
+  h.controller.update(false, 0.10);
+  assert.ok(Number(h.variables.get("--scene-content-reveal")) > 0);
+  h.controller.update(false, 0.13);
+  assert.equal(Number(h.variables.get("--scene-content-reveal")), 1);
+  assert.ok(Number(h.variables.get("--bo-progress")) > 0);
+  h.controller.update(true);
+  assert.equal(Number(h.variables.get("--scene-content-reveal")), 1);
 });

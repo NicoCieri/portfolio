@@ -26,11 +26,11 @@ export function useBackofficeScroll() {
       const screenHeight = sceneScreenHeight(viewport);
       const bounds = root.getBoundingClientRect();
       const entryLead = screenHeight * SCENE_ENTRY_SCREENS;
-      const introDistance = screenHeight * SCENE_INTRO_SCREENS;
+      const introDistance = entryLead + screenHeight * SCENE_INTRO_SCREENS;
       const distance = Math.max(1, scrollSceneRange(root.offsetHeight, viewport.offsetHeight, screenHeight, entryLead) - introDistance);
-      const reveal = reducedMotion || playbackProgress !== undefined ? 1 : sceneContentReveal(entryLead - bounds.top, screenHeight);
+      const reveal = reducedMotion ? 1 : playbackProgress !== undefined ? ease((playbackProgress - 0.08) / 0.04) : sceneContentReveal(-bounds.top, screenHeight);
       root.style.setProperty("--scene-content-reveal", String(reveal));
-      const scrollProgress = reducedMotion ? 1 : playbackProgress ?? clamp((entryLead - bounds.top - introDistance) / distance);
+      const scrollProgress = reducedMotion ? 1 : (playbackProgress !== undefined ? clamp((playbackProgress - 0.12) / 0.88) : clamp((entryLead - bounds.top - introDistance) / distance));
       const p = mapSceneProgress(scrollProgress, scrollIntervals);
       const phase = p < 0.2 ? "queue" : p < 0.43 ? "inspect" : p < 0.58 ? "saving" : p < 0.73 ? "error" : p < 0.87 ? "retry" : "saved";
       const changed = phase === "saving" || phase === "retry" || phase === "saved";
