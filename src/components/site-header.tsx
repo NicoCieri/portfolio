@@ -24,7 +24,7 @@ export function SiteHeader() {
   });
 
   return (
-    <header className="page-shell relative flex min-h-(--header-height) flex-wrap items-center justify-between gap-x-6 gap-y-3 overflow-visible border-b border-border py-5 min-[701px]:py-6">
+    <header data-site-header className="page-shell relative flex min-h-(--header-height) flex-wrap items-center justify-between gap-x-6 gap-y-3 overflow-visible border-b border-border py-5 min-[701px]:py-6">
       <Link
         className="relative inline-flex items-center overflow-visible text-body font-semibold tracking-[-0.025em] whitespace-nowrap"
         href={localePaths[locale]}

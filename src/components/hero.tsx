@@ -32,6 +32,7 @@ export function Hero() {
           <div className="pb-1">
             <div
               ref={portraitStageRef}
+
               className="relative mx-auto mb-5 size-32 min-[701px]:[perspective:700px] min-[701px]:size-44 min-[901px]:size-52"
             >
               <div
@@ -87,6 +88,7 @@ export function Hero() {
       </div>
       <div className="flex min-h-32 flex-1 items-center justify-center py-6">
         <Button
+
           href="#work"
           className="max-w-full shrink-0 text-center"
         >

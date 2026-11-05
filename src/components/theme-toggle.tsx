@@ -89,7 +89,7 @@ export function ThemeToggle() {
             <path d="M0 .969Q.0625 1 .125 .969T.25 .969T.375 .969T.5 .969T.625 .969T.75 .969T.875 .969T1 .969V0H0Z" />
           </clipPath>
         </svg>
-        <div ref={curtainRef} hidden aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-100 h-[130svh] bg-current will-change-[transform,opacity]" />
+        <div ref={curtainRef} hidden aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-100 h-[130svh] overflow-hidden bg-current will-change-[transform,opacity]" />
       </>,
       document.body,
     )}

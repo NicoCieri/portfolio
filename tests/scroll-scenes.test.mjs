@@ -676,3 +676,17 @@ test("seat section steps follow map, detail and decisions through replay and rev
     assert.equal(h.root.dataset.step, "3");
   }
 });
+
+
+test("hero snapshot resolves either palette and restores the live theme on failure", () => {
+  for (const target of ["light", "dark"]) {
+    const original = target === "dark" ? "light" : "dark";
+    const root = { dataset: { theme: original }, getAttribute: () => original, setAttribute(_, value) { this.dataset.theme = value; } };
+    const load = sourceLoader({}, {
+      document: { documentElement: root, createElement: () => ({ dataset: {}, style: {}, setAttribute() {} }) },
+      getComputedStyle: () => { assert.equal(root.dataset.theme, target); throw new Error("style capture failed"); },
+    });
+    assert.throws(() => load("@/lib/hero-snapshot").createHeroSnapshot({ getBoundingClientRect: () => ({}) }, target), /style capture failed/);
+    assert.equal(root.dataset.theme, original);
+  }
+});
